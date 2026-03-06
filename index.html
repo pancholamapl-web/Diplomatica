@@ -7,129 +7,54 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:       #0e0f11;
-    --surface:  #16181c;
-    --border:   #2a2d33;
-    --accent:   #c8a96e;
-    --acc-dim:  #8a7248;
-    --text:     #d4d6da;
-    --text-dim: #6b6f78;
-    --bright:   #f0f1f3;
-    --red:      #c45c5c;
-    --green:    #5c9e6e;
+    --bg:#0e0f11; --surface:#16181c; --border:#2a2d33;
+    --accent:#c8a96e; --acc-dim:#8a7248; --text:#d4d6da;
+    --text-dim:#6b6f78; --bright:#f0f1f3; --red:#c45c5c; --green:#5c9e6e;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    background: var(--bg); color: var(--text);
-    font-family: 'IBM Plex Sans', sans-serif; font-weight:300;
-    min-height: 100vh; line-height: 1.6;
-  }
-  a { text-decoration:none; color:inherit; transition: color .15s; }
-  a:hover { color: var(--accent); }
-
-  header {
-    border-bottom: 1px solid var(--border);
-    padding: 14px 28px;
-    display: flex; align-items:center; justify-content:space-between;
-    position: sticky; top:0; z-index:100;
-    background: rgba(14,15,17,.97); backdrop-filter: blur(8px);
-  }
-  .logo     { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--accent); letter-spacing:.04em; }
+  body { background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; font-weight:300; min-height:100vh; line-height:1.6; }
+  a { text-decoration:none; color:inherit; transition:color .15s; }
+  a:hover { color:var(--accent); }
+  header { border-bottom:1px solid var(--border); padding:14px 28px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; background:rgba(14,15,17,.97); backdrop-filter:blur(8px); }
+  .logo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--accent); letter-spacing:.04em; }
   .logo-sub { font-family:'IBM Plex Mono',monospace; font-size:.6rem; color:var(--text-dim); letter-spacing:.18em; text-transform:uppercase; margin-top:2px; }
-  #ts       { font-family:'IBM Plex Mono',monospace; font-size:.62rem; color:var(--text-dim); }
-
+  #ts { font-family:'IBM Plex Mono',monospace; font-size:.62rem; color:var(--text-dim); }
   .wrap { max-width:960px; margin:0 auto; padding:0 20px 60px; }
-
-  .controls {
-    padding: 16px 0 12px; border-bottom:1px solid var(--border);
-    margin-bottom:20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-  }
+  .controls { padding:16px 0 12px; border-bottom:1px solid var(--border); margin-bottom:20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
   .mono-label { font-family:'IBM Plex Mono',monospace; font-size:.6rem; text-transform:uppercase; letter-spacing:.2em; color:var(--text-dim); white-space:nowrap; }
-
-  .chip {
-    display:flex; align-items:center; gap:6px;
-    background:#16181c; border:1px solid var(--border);
-    border-radius:3px; padding:5px 13px;
-    font-family:'IBM Plex Mono',monospace; font-size:.65rem;
-    color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none;
-  }
+  .chip { display:flex; align-items:center; gap:6px; background:#16181c; border:1px solid var(--border); border-radius:3px; padding:5px 13px; font-family:'IBM Plex Mono',monospace; font-size:.65rem; color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none; }
   .chip .dot { width:6px; height:6px; border-radius:50%; background:currentColor; flex-shrink:0; }
-  .chip.on-bbc { border-color:rgba(200,60,60,.5);  color:#d47070; background:rgba(200,60,60,.08); }
-  .chip.on-dw  { border-color:rgba(92,130,196,.5); color:#7ba3e8; background:rgba(92,130,196,.08); }
-  .chip.on-cnn { border-color:rgba(200,80,40,.5);  color:#d4835c; background:rgba(200,80,40,.08); }
-
-  .btn-refresh {
-    background:rgba(200,169,110,.1); border:1px solid var(--acc-dim);
-    border-radius:3px; padding:6px 20px;
-    font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:var(--accent);
-    cursor:pointer; transition:all .15s; margin-left:auto;
-  }
+  .chip.on-bbc { border-color:rgba(200,60,60,.5); color:#d47070; background:rgba(200,60,60,.08); }
+  .chip.on-aje { border-color:rgba(255,168,0,.5); color:#e8a83a; background:rgba(255,168,0,.08); }
+  .chip.on-f24 { border-color:rgba(0,120,200,.5); color:#5aa0d4; background:rgba(0,120,200,.08); }
+  .btn-refresh { background:rgba(200,169,110,.1); border:1px solid var(--acc-dim); border-radius:3px; padding:6px 20px; font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:var(--accent); cursor:pointer; transition:all .15s; margin-left:auto; }
   .btn-refresh:hover { background:rgba(200,169,110,.18); }
   .btn-refresh:disabled { opacity:.4; cursor:not-allowed; }
-
-  #status {
-    font-family:'IBM Plex Mono',monospace; font-size:.65rem;
-    min-height:18px; margin-bottom:12px;
-    display:flex; align-items:center; gap:7px;
-  }
-  #status.idle    { color:var(--text-dim); }
-  #status.loading { color:var(--accent); }
-  #status.done    { color:var(--green); }
-  #status.error   { color:var(--red); }
-
+  #status { font-family:'IBM Plex Mono',monospace; font-size:.65rem; min-height:18px; margin-bottom:12px; display:flex; align-items:center; gap:7px; }
+  #status.idle { color:var(--text-dim); } #status.loading { color:var(--accent); } #status.done { color:var(--green); } #status.error { color:var(--red); }
   @keyframes spin { to { transform:rotate(360deg); } }
-  .spinner {
-    width:10px; height:10px; border-radius:50%; flex-shrink:0;
-    border:1.5px solid var(--acc-dim); border-top-color:var(--accent);
-    animation: spin .7s linear infinite;
-  }
-
-  #stats {
-    font-family:'IBM Plex Mono',monospace; font-size:.63rem;
-    color:var(--text-dim); margin-bottom:14px;
-    display:none; gap:16px; flex-wrap:wrap;
-  }
+  .spinner { width:10px; height:10px; border-radius:50%; flex-shrink:0; border:1.5px solid var(--acc-dim); border-top-color:var(--accent); animation:spin .7s linear infinite; }
+  #stats { font-family:'IBM Plex Mono',monospace; font-size:.63rem; color:var(--text-dim); margin-bottom:14px; display:none; gap:16px; flex-wrap:wrap; }
   #stats b { color:var(--text); font-weight:400; }
-
   #list { display:flex; flex-direction:column; gap:2px; }
-
   @keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
-
-  .card {
-    background:var(--surface); border:1px solid var(--border);
-    border-radius:4px; padding:15px 18px;
-    transition: border-color .15s;
-  }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:15px 18px; transition:border-color .15s; }
   .card:hover { border-color:var(--acc-dim); }
-
   .card-meta { display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap; }
-
-  .badge {
-    font-family:'IBM Plex Mono',monospace; font-size:.58rem;
-    text-transform:uppercase; letter-spacing:.15em;
-    padding:2px 7px; border-radius:2px; font-weight:700;
-  }
-  .badge-BBC { background:rgba(200,60,60,.12);  color:#d47070; border:1px solid rgba(200,60,60,.3); }
-  .badge-DW  { background:rgba(92,130,196,.12); color:#7ba3e8; border:1px solid rgba(92,130,196,.3); }
-  .badge-CNN { background:rgba(200,80,40,.12);  color:#d4835c; border:1px solid rgba(200,80,40,.3); }
-
-  .card-date  { font-family:'IBM Plex Mono',monospace; font-size:.6rem; color:var(--text-dim); }
+  .badge { font-family:'IBM Plex Mono',monospace; font-size:.58rem; text-transform:uppercase; letter-spacing:.15em; padding:2px 7px; border-radius:2px; font-weight:700; }
+  .badge-BBC { background:rgba(200,60,60,.12); color:#d47070; border:1px solid rgba(200,60,60,.3); }
+  .badge-AJE { background:rgba(255,168,0,.12); color:#e8a83a; border:1px solid rgba(255,168,0,.3); }
+  .badge-F24 { background:rgba(0,120,200,.12); color:#5aa0d4; border:1px solid rgba(0,120,200,.3); }
+  .card-date { font-family:'IBM Plex Mono',monospace; font-size:.6rem; color:var(--text-dim); }
   .card-title { font-family:'Playfair Display',serif; font-size:1.02rem; color:var(--bright); line-height:1.4; margin-bottom:7px; }
-  .card-desc  { font-size:.83rem; color:var(--text-dim); line-height:1.65;
-    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
-
+  .card-desc { font-size:.83rem; color:var(--text-dim); line-height:1.65; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
   .empty { text-align:center; padding:80px 20px; color:var(--text-dim); }
   .empty-icon { font-size:2rem; opacity:.25; margin-bottom:14px; }
   .empty p { font-family:'IBM Plex Mono',monospace; font-size:.72rem; line-height:2; }
-
-  footer {
-    border-top:1px solid var(--border); margin-top:40px; padding:18px 0;
-    text-align:center; font-family:'IBM Plex Mono',monospace; font-size:.6rem; color:#4a4e58;
-  }
+  footer { border-top:1px solid var(--border); margin-top:40px; padding:18px 0; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:.6rem; color:#4a4e58; }
 </style>
 </head>
 <body>
-
 <header>
   <div>
     <div class="logo">Diplomatica</div>
@@ -137,139 +62,87 @@
   </div>
   <div id="ts"></div>
 </header>
-
 <div class="wrap">
   <div class="controls">
     <span class="mono-label">Fuentes</span>
     <div class="chip on-bbc" id="chip-BBC" onclick="toggle('BBC')"><span class="dot"></span>BBC Mundo</div>
-    <div class="chip on-dw"  id="chip-DW"  onclick="toggle('DW')"><span class="dot"></span>DW Español</div>
-    <div class="chip on-cnn" id="chip-CNN" onclick="toggle('CNN')"><span class="dot"></span>CNN Español</div>
+    <div class="chip on-aje" id="chip-AJE" onclick="toggle('AJE')"><span class="dot"></span>Al Jazeera</div>
+    <div class="chip on-f24" id="chip-F24" onclick="toggle('F24')"><span class="dot"></span>France 24</div>
     <button class="btn-refresh" id="refresh-btn" onclick="load()">↻ Actualizar</button>
   </div>
-
   <div id="status" class="loading"><span class="spinner"></span>Cargando noticias...</div>
   <div id="stats"></div>
   <div id="list"></div>
-
-  <footer>Diplomatica · BBC Mundo · DW Español · CNN Español · vía RSS</footer>
+  <footer>Diplomatica · BBC Mundo · Al Jazeera · France 24 · vía RSS</footer>
 </div>
-
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbzA_FCEMdzW6hj2OjaRP7TLroAekGQbhMaPlvCRaCgu2amk9k-GNEdjrEL5dAlR6BiTtw/exec";
-const LABELS  = { BBC:"BBC Mundo", DW:"DW Español", CNN:"CNN Español" };
-const COLORS  = { BBC:"#d47070",   DW:"#7ba3e8",    CNN:"#d4835c" };
-
-let active  = new Set(["BBC","DW","CNN"]);
+const LABELS = { BBC:"BBC Mundo", AJE:"Al Jazeera", F24:"France 24" };
+const COLORS = { BBC:"#d47070", AJE:"#e8a83a", F24:"#5aa0d4" };
+let active = new Set(["BBC","AJE","F24"]);
 let allNews = [];
-
 window.onload = load;
-
 function toggle(src) {
   const chip = document.getElementById("chip-" + src);
-  if (active.has(src)) {
-    active.delete(src);
-    chip.className = "chip";
-  } else {
-    active.add(src);
-    chip.className = "chip on-" + src.toLowerCase();
-  }
+  if (active.has(src)) { active.delete(src); chip.className = "chip"; }
+  else { active.add(src); chip.className = "chip on-" + src.toLowerCase(); }
   render();
 }
-
 async function load() {
   const btn = document.getElementById("refresh-btn");
   btn.disabled = true;
   setStatus('<span class="spinner"></span>Cargando noticias...', "loading");
   document.getElementById("list").innerHTML = "";
   document.getElementById("stats").style.display = "none";
-
   try {
-    const res  = await fetch(API_URL, { signal: AbortSignal.timeout(25000) });
+    const res = await fetch(API_URL, { signal: AbortSignal.timeout(25000) });
     const data = await res.json();
-
     if (!data.ok) throw new Error(data.error || "Error en el script");
-
     allNews = data.items || [];
-
     const d = new Date(data.updated);
-    document.getElementById("ts").textContent =
-      "Actualizado: " + d.toLocaleTimeString("es-CL", { hour:"2-digit", minute:"2-digit" });
-
+    document.getElementById("ts").textContent = "Actualizado: " + d.toLocaleTimeString("es-CL", { hour:"2-digit", minute:"2-digit" });
     setStatus(`✓ ${allNews.length} noticias cargadas.`, "done");
     render();
-
   } catch (e) {
     setStatus("Error: " + e.message, "error");
-    document.getElementById("list").innerHTML =
-      `<div class="empty">
-        <div class="empty-icon">⚠</div>
-        <p>No se pudo conectar.<br>Verifica que el script esté activo e intenta de nuevo.</p>
-       </div>`;
+    document.getElementById("list").innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><p>No se pudo conectar.<br>Intenta de nuevo.</p></div>`;
   }
-
   btn.disabled = false;
 }
-
 function render() {
-  const list  = document.getElementById("list");
+  const list = document.getElementById("list");
   const stats = document.getElementById("stats");
   const items = allNews.filter(i => active.has(i.source));
-
   if (!items.length) {
-    list.innerHTML = `<div class="empty"><div class="empty-icon">∅</div>
-      <p>No hay noticias.<br>Activa al menos una fuente o actualiza.</p></div>`;
+    list.innerHTML = `<div class="empty"><div class="empty-icon">∅</div><p>No hay noticias.<br>Activa al menos una fuente o actualiza.</p></div>`;
     stats.style.display = "none";
     return;
   }
-
   const counts = {};
   items.forEach(i => counts[i.source] = (counts[i.source]||0)+1);
-  stats.innerHTML = `<b>${items.length}</b> noticias · ` +
-    Object.entries(counts).map(([s,n]) =>
-      `${LABELS[s]}: <b style="color:${COLORS[s]}">${n}</b>`
-    ).join(" · ");
+  stats.innerHTML = `<b>${items.length}</b> noticias · ` + Object.entries(counts).map(([s,n]) => `${LABELS[s]}: <b style="color:${COLORS[s]}">${n}</b>`).join(" · ");
   stats.style.display = "flex";
-
   list.innerHTML = "";
   items.forEach((item, i) => {
     const card = document.createElement("div");
     card.className = "card";
-    card.style.animation = `fadeUp 0.25s ease ${Math.min(i * 0.025, 0.5)}s both`;
-    card.innerHTML =
-      `<div class="card-meta">
-        <span class="badge badge-${item.source}">${LABELS[item.source]}</span>
-        <span class="card-date">${formatDate(item.pubDate)}</span>
-       </div>
-       <div class="card-title">
-         <a href="${esc(item.link)}" target="_blank" rel="noopener">${esc(item.title)}</a>
-       </div>
-       ${item.desc ? `<div class="card-desc">${esc(item.desc)}</div>` : ""}`;
+    card.style.animation = `fadeUp 0.25s ease ${Math.min(i*0.025,0.5)}s both`;
+    card.innerHTML = `<div class="card-meta"><span class="badge badge-${item.source}">${LABELS[item.source]}</span><span class="card-date">${formatDate(item.pubDate)}</span></div><div class="card-title"><a href="${esc(item.link)}" target="_blank" rel="noopener">${esc(item.title)}</a></div>${item.desc ? `<div class="card-desc">${esc(item.desc)}</div>` : ""}`;
     list.appendChild(card);
   });
 }
-
-function setStatus(html, cls) {
-  const s = document.getElementById("status");
-  s.innerHTML = html;
-  s.className = cls;
-}
-
+function setStatus(html, cls) { const s = document.getElementById("status"); s.innerHTML = html; s.className = cls; }
 function formatDate(str) {
   if (!str) return "";
-  const d    = new Date(str);
+  const d = new Date(str);
   const diff = Math.floor((Date.now() - d) / 60000);
-  if (isNaN(diff))  return str;
-  if (diff < 1)     return "ahora";
-  if (diff < 60)    return `hace ${diff} min`;
-  if (diff < 1440)  return `hace ${Math.floor(diff / 60)} h`;
+  if (isNaN(diff)) return str;
+  if (diff < 1) return "ahora";
+  if (diff < 60) return `hace ${diff} min`;
+  if (diff < 1440) return `hace ${Math.floor(diff/60)} h`;
   return d.toLocaleDateString("es-CL", { day:"numeric", month:"short" });
 }
-
-function esc(s) {
-  return String(s || "")
-    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-}
+function esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 </script>
 </body>
 </html>
