@@ -343,7 +343,7 @@ const CATEGORIES = {
   politica:   { label:"Política",           icon:"🏛", keywords:["elección","elecciones","presidente","gobierno","parlamento","partido","voto","votación","golpe de estado","congreso","senado","primer ministro","democracia","dictadura","referéndum","plebiscito","oposición","coalición","candidato","mandatario","ministro","gabinete","reforma","constitución","decreto","election","president","government","parliament","party","vote","coup","congress","prime minister","democracy","dictatorship","referendum","minister","cabinet","reform","constitution","law","political","politics","policy"] },
   economia:   { label:"Economía",           icon:"📊", keywords:["economía","aranceles","arancel","mercado","inflación","pib","banco","petróleo","deuda","comercio","exportación","importación","fmi","banco mundial","reserva federal","bolsa","acciones","inversión","déficit","recesión","crecimiento","empleo","desempleo","salario","impuesto","moneda","dólar","euro","yuan","criptomoneda","finanzas","presupuesto","economy","tariff","market","inflation","gdp","debt","trade","export","import","imf","world bank","stock","investment","recession","growth","unemployment","wage","tax","currency","dollar","finance","budget","opec","brent","crude"] },
   clima:      { label:"Clima & Energía",    icon:"🌍", keywords:["clima","cambio climático","co2","emisiones","calentamiento","inundación","sequía","huracán","tifón","ciclón","terremoto","tsunami","desastre natural","incendio forestal","energía renovable","solar","eólica","nuclear","hidrógeno","carbono","cop","acuerdo de paris","descarbonización","medioambiente","biodiversidad","deforestación","contaminación","océano","glaciar","climate","climate change","emissions","warming","flood","drought","hurricane","earthquake","natural disaster","wildfire","renewable","wind","nuclear","hydrogen","carbon","coal","environment","biodiversity","deforestation","pollution","ocean","glacier"] },
-  tecnologia: { label:"Tecnología",         icon:"💡", keywords:["inteligencia artificial","ciberseguridad","ciberataque","hackeo","ransomware","malware","spacex","cohete espacial","chip","semiconductores","5g","computación cuántica","robótica","deepfake","openai","chatgpt","nasa","elon musk","starlink","huawei","tiktok","microsoft","google","apple","meta","amazon","artificial intelligence","cybersecurity","cyberattack","hacking","semiconductor","robotics","space launch","spacecraft","big tech"] },
+  tecnologia: { label:"Tecnología",         icon:"💡", keywords:["tecnología","inteligencia artificial","ia","ai","ciberseguridad","hackeo","hack","espacio","satélite","nasa","spacex","chip","semiconductores","internet","redes sociales","datos","privacidad","vigilancia","5g","quantum","robot","automatización","deepfake","desinformación","microsoft","google","apple","meta","amazon","openai","tiktok","huawei","technology","artificial intelligence","cybersecurity","hacking","space","satellite","semiconductor","data","privacy","surveillance","automation","social media"] },
   sociedad:   { label:"Sociedad",           icon:"👥", keywords:["migrante","migrantes","refugiado","refugiados","asilo","migración","desplazados","derechos humanos","libertad","protestas","manifestación","huelga","salud","pandemia","vacuna","epidemia","hambre","pobreza","desigualdad","educación","género","feminismo","discriminación","racismo","religión","crimen","narcotráfico","corrupción","justicia","tribunal","migrant","refugee","asylum","migration","displaced","human rights","freedom","protest","strike","health","pandemic","vaccine","epidemic","hunger","poverty","inequality","education","gender","discrimination","racism","religion","crime","corruption","justice","court"] }
 };
 
@@ -487,17 +487,26 @@ function escapeHtml(s) {
 
 // ── Feed ──────────────────────────────────────────────────────────
 
-// Noticias que NO son de interés internacional
 const EXCLUDE_KEYWORDS = [
-  "rihanna","beyoncé","taylor swift","kardashian","celebrity","celebridad",
-  "farándula","entretenimiento","bali","turismo","hotel","resort","playa",
-  "receta","cocina","moda","fashion","oscar","grammy","emmy","MTV",
-  "nba","nfl","fifa","champions league","premier league","fórmula 1","tenis",
-  "baloncesto","fútbol americano","béisbol","golf","ciclismo","tour de france",
-  "dispararon a","arrestaron a","matan a","asesinan a","muere cantante",
-  "actor","actriz","director de cine","serie de tv","película","netflix","spotify",
-  "reality","talent show","miss universo","miss mundo","boda real","divorcio",
-  "horóscopo","recetas","viaje","destino turístico","paraíso"
+  // Farándula y entretenimiento
+  "rihanna","beyoncé","taylor swift","kardashian","justin bieber","lady gaga",
+  "kanye west","ariana grande","selena gomez","miley cyrus",
+  // Deportes
+  "nba","nfl","champions league","premier league","liga española","bundesliga",
+  "serie a","ligue 1","fórmula 1","formula 1","tour de france","wimbledon",
+  "super bowl","mundial de fútbol","copa del mundo","roland garros","us open",
+  "copa america","eurocopa","balón de oro","transferencia de jugador",
+  // Turismo y lifestyle
+  "bali","destino turístico","turismo inmobiliario","resort","paraíso tropical",
+  "mejores playas","viaje a","qué ver en","guía de viaje",
+  // Crimen no internacional
+  "dispararon a la casa","arrestaron a una mujer","arrestaron a un hombre",
+  "asesinó a su","mató a su","crimen en los ángeles","crimen en nueva york",
+  "tiroteo en","asaltaron","robo en",
+  // Cultura pop
+  "oscar","grammy","emmy","golden globe","mtv awards","billboard",
+  "película de","serie de netflix","temporada de","reality show",
+  "horóscopo","receta de","recetas para"
 ];
 
 function isRelevant(item) {
@@ -506,31 +515,12 @@ function isRelevant(item) {
 }
 
 function categorize(item) {
-  const text = ((item.title || "") + " " + (item.desc || "")).toLowerCase();
-  const scores = {};
-
+  const text = ((item.title||"") + " " + (item.desc||"")).toLowerCase();
+  const matched = [];
   for (const [key, cat] of Object.entries(CATEGORIES)) {
-    let score = 0;
-    for (const kw of cat.keywords) {
-      if (text.includes(kw)) score += 1;
-    }
-    if (score > 0) scores[key] = score;
+    if (cat.keywords.some(kw => text.includes(kw))) matched.push(key);
   }
-
-  if (Object.keys(scores).length === 0) return ["general"];
-
-  const sorted = Object.entries(scores)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 2)
-    .map(([key]) => key);
-
-  if (sorted.length === 2) {
-    const top    = scores[sorted[0]];
-    const second = scores[sorted[1]];
-    if (second < top * 0.4) return [sorted[0]];
-  }
-
-  return sorted;
+  return matched.length > 0 ? matched : ["general"];
 }
 function tagAllNews() { allNews.forEach(item => { item.cats = categorize(item); }); }
 
@@ -590,7 +580,12 @@ function render() {
   const stats = document.getElementById("stats");
 
   let items = allNews.filter(i => activeSources.has(i.source) && isRelevant(i));
-  if (activeCats.size > 0) items = items.filter(i => i.cats && i.cats.some(c => activeCats.has(c)));
+  if (activeCats.size > 0) {
+    items = items.filter(i => i.cats && i.cats.some(c => activeCats.has(c)));
+  } else {
+    // En vista "Todas", ocultar noticias sin categoría reconocida
+    items = items.filter(i => i.cats && i.cats.some(c => c !== "general"));
+  }
 
   if (!items.length) {
     list.innerHTML = `<div class="empty"><div class="empty-icon">∅</div><p>No hay noticias.<br>Activa al menos una fuente o categoría.</p></div>`;
