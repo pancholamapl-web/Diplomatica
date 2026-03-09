@@ -15,42 +15,93 @@
   body { background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; font-weight:300; min-height:100vh; line-height:1.6; }
   a { text-decoration:none; color:inherit; transition:color .15s; }
   a:hover { color:var(--accent); }
+
+  /* ── Header ── */
   header { border-bottom:1px solid var(--border); padding:14px 28px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; background:rgba(14,15,17,.97); backdrop-filter:blur(8px); }
   .logo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--accent); letter-spacing:.04em; }
   .logo-sub { font-family:'IBM Plex Mono',monospace; font-size:.6rem; color:var(--text-dim); letter-spacing:.18em; text-transform:uppercase; margin-top:2px; }
   #ts { font-family:'IBM Plex Mono',monospace; font-size:.62rem; color:var(--text-dim); }
+
+  /* ── Layout ── */
   .wrap { max-width:960px; margin:0 auto; padding:0 20px 60px; }
-  .controls { padding:16px 0 12px; border-bottom:1px solid var(--border); margin-bottom:20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+
+  /* ── Controls row: fuentes ── */
+  .controls { padding:16px 0 12px; border-bottom:1px solid var(--border); margin-bottom:0; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
   .mono-label { font-family:'IBM Plex Mono',monospace; font-size:.6rem; text-transform:uppercase; letter-spacing:.2em; color:var(--text-dim); white-space:nowrap; }
+
+  /* ── Chips de fuentes ── */
   .chip { display:flex; align-items:center; gap:6px; background:#16181c; border:1px solid var(--border); border-radius:3px; padding:5px 13px; font-family:'IBM Plex Mono',monospace; font-size:.65rem; color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none; }
   .chip .dot { width:6px; height:6px; border-radius:50%; background:currentColor; flex-shrink:0; }
   .chip.on-bbc { border-color:rgba(200,60,60,.5); color:#d47070; background:rgba(200,60,60,.08); }
   .chip.on-aje { border-color:rgba(255,168,0,.5); color:#e8a83a; background:rgba(255,168,0,.08); }
   .chip.on-f24 { border-color:rgba(0,120,200,.5); color:#5aa0d4; background:rgba(0,120,200,.08); }
+
   .btn-refresh { background:rgba(200,169,110,.1); border:1px solid var(--acc-dim); border-radius:3px; padding:6px 20px; font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:var(--accent); cursor:pointer; transition:all .15s; margin-left:auto; }
   .btn-refresh:hover { background:rgba(200,169,110,.18); }
   .btn-refresh:disabled { opacity:.4; cursor:not-allowed; }
+
+  /* ── Separador ── */
+  .divider { height:1px; background:var(--border); margin:0; }
+
+  /* ── Controls row: categorías ── */
+  .cat-controls { padding:10px 0 14px; border-bottom:1px solid var(--border); margin-bottom:20px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+
+  /* ── Chips de categoría ── */
+  .cat-chip {
+    display:flex; align-items:center; gap:5px;
+    background:#16181c; border:1px solid var(--border); border-radius:3px;
+    padding:4px 11px; font-family:'IBM Plex Mono',monospace; font-size:.62rem;
+    color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none;
+  }
+  .cat-chip .cat-icon { font-size:.75rem; line-height:1; }
+  .cat-chip.active { border-color:rgba(200,169,110,.5); color:var(--accent); background:rgba(200,169,110,.08); }
+  .cat-chip:hover:not(.active) { border-color:#3a3d45; color:#9a9ea8; }
+
+  /* Botón "Todas" */
+  .cat-all {
+    display:flex; align-items:center;
+    background:#16181c; border:1px solid var(--border); border-radius:3px;
+    padding:4px 11px; font-family:'IBM Plex Mono',monospace; font-size:.62rem;
+    color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none;
+  }
+  .cat-all.active { border-color:rgba(200,169,110,.5); color:var(--accent); background:rgba(200,169,110,.08); }
+
+  /* ── Status / Stats ── */
   #status { font-family:'IBM Plex Mono',monospace; font-size:.65rem; min-height:18px; margin-bottom:12px; display:flex; align-items:center; gap:7px; }
   #status.idle { color:var(--text-dim); } #status.loading { color:var(--accent); } #status.done { color:var(--green); } #status.error { color:var(--red); }
   @keyframes spin { to { transform:rotate(360deg); } }
   .spinner { width:10px; height:10px; border-radius:50%; flex-shrink:0; border:1.5px solid var(--acc-dim); border-top-color:var(--accent); animation:spin .7s linear infinite; }
   #stats { font-family:'IBM Plex Mono',monospace; font-size:.63rem; color:var(--text-dim); margin-bottom:14px; display:none; gap:16px; flex-wrap:wrap; }
   #stats b { color:var(--text); font-weight:400; }
+
+  /* ── Cards ── */
   #list { display:flex; flex-direction:column; gap:2px; }
   @keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
   .card { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:15px 18px; transition:border-color .15s; }
   .card:hover { border-color:var(--acc-dim); }
-  .card-meta { display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap; }
+  .card-meta { display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
   .badge { font-family:'IBM Plex Mono',monospace; font-size:.58rem; text-transform:uppercase; letter-spacing:.15em; padding:2px 7px; border-radius:2px; font-weight:700; }
   .badge-BBC { background:rgba(200,60,60,.12); color:#d47070; border:1px solid rgba(200,60,60,.3); }
   .badge-AJE { background:rgba(255,168,0,.12); color:#e8a83a; border:1px solid rgba(255,168,0,.3); }
   .badge-F24 { background:rgba(0,120,200,.12); color:#5aa0d4; border:1px solid rgba(0,120,200,.3); }
-  .card-date { font-family:'IBM Plex Mono',monospace; font-size:.6rem; color:var(--text-dim); }
+
+  /* ── Tags de categoría en las cards ── */
+  .cat-tag {
+    font-family:'IBM Plex Mono',monospace; font-size:.56rem; text-transform:uppercase;
+    letter-spacing:.1em; padding:2px 6px; border-radius:2px;
+    background:rgba(200,169,110,.07); color:var(--acc-dim);
+    border:1px solid rgba(200,169,110,.18);
+  }
+
+  .card-date { font-family:'IBM Plex Mono',monospace; font-size:.6rem; color:var(--text-dim); margin-left:auto; }
   .card-title { font-family:'Playfair Display',serif; font-size:1.02rem; color:var(--bright); line-height:1.4; margin-bottom:7px; }
   .card-desc { font-size:.83rem; color:var(--text-dim); line-height:1.65; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+
+  /* ── Empty state ── */
   .empty { text-align:center; padding:80px 20px; color:var(--text-dim); }
   .empty-icon { font-size:2rem; opacity:.25; margin-bottom:14px; }
   .empty p { font-family:'IBM Plex Mono',monospace; font-size:.72rem; line-height:2; }
+
   footer { border-top:1px solid var(--border); margin-top:40px; padding:18px 0; text-align:center; font-family:'IBM Plex Mono',monospace; font-size:.6rem; color:#4a4e58; }
 </style>
 </head>
@@ -62,32 +113,213 @@
   </div>
   <div id="ts"></div>
 </header>
+
 <div class="wrap">
+  <!-- Fila 1: Fuentes -->
   <div class="controls">
     <span class="mono-label">Fuentes</span>
-    <div class="chip on-bbc" id="chip-BBC" onclick="toggle('BBC')"><span class="dot"></span>BBC Mundo</div>
-    <div class="chip on-aje" id="chip-AJE" onclick="toggle('AJE')"><span class="dot"></span>Al Jazeera</div>
-    <div class="chip on-f24" id="chip-F24" onclick="toggle('F24')"><span class="dot"></span>France 24</div>
+    <div class="chip on-bbc" id="chip-BBC" onclick="toggleSource('BBC')"><span class="dot"></span>BBC Mundo</div>
+    <div class="chip on-aje" id="chip-AJE" onclick="toggleSource('AJE')"><span class="dot"></span>Al Jazeera</div>
+    <div class="chip on-f24" id="chip-F24" onclick="toggleSource('F24')"><span class="dot"></span>France 24</div>
     <button class="btn-refresh" id="refresh-btn" onclick="load()">↻ Actualizar</button>
   </div>
+
+  <!-- Fila 2: Categorías -->
+  <div class="cat-controls">
+    <span class="mono-label">Categorías</span>
+    <div class="cat-all active" id="cat-all" onclick="toggleAll()">Todas</div>
+    <div class="cat-chip" id="cat-guerra"    onclick="toggleCat('guerra')">   <span class="cat-icon">⚔</span>  Guerra & Conflicto</div>
+    <div class="cat-chip" id="cat-diplomacia" onclick="toggleCat('diplomacia')"><span class="cat-icon">🤝</span> Diplomacia</div>
+    <div class="cat-chip" id="cat-politica"  onclick="toggleCat('politica')">  <span class="cat-icon">🏛</span> Política</div>
+    <div class="cat-chip" id="cat-economia"  onclick="toggleCat('economia')">  <span class="cat-icon">📊</span> Economía</div>
+    <div class="cat-chip" id="cat-clima"     onclick="toggleCat('clima')">     <span class="cat-icon">🌍</span> Clima & Energía</div>
+    <div class="cat-chip" id="cat-tecnologia" onclick="toggleCat('tecnologia')"><span class="cat-icon">💡</span> Tecnología</div>
+    <div class="cat-chip" id="cat-sociedad"  onclick="toggleCat('sociedad')">  <span class="cat-icon">👥</span> Sociedad</div>
+  </div>
+
   <div id="status" class="loading"><span class="spinner"></span>Cargando noticias...</div>
   <div id="stats"></div>
   <div id="list"></div>
-  <footer>Diplomatica · BBC Mundo · Al Jazeera · France 24 · vía RSS</footer>
 </div>
+
+<footer>Diplomatica · BBC Mundo · Al Jazeera · France 24 · vía RSS</footer>
+
 <script>
+// ── Config ──────────────────────────────────────────────────────
 const API_URL = "https://script.google.com/macros/s/AKfycbzA_FCEMdzW6hj2OjaRP7TLroAekGQbhMaPlvCRaCgu2amk9k-GNEdjrEL5dAlR6BiTtw/exec";
-const LABELS = { BBC:"BBC Mundo", AJE:"Al Jazeera", F24:"France 24" };
-const COLORS = { BBC:"#d47070", AJE:"#e8a83a", F24:"#5aa0d4" };
-let active = new Set(["BBC","AJE","F24"]);
-let allNews = [];
-window.onload = load;
-function toggle(src) {
+const LABELS  = { BBC:"BBC Mundo", AJE:"Al Jazeera", F24:"France 24" };
+const COLORS  = { BBC:"#d47070",   AJE:"#e8a83a",    F24:"#5aa0d4"  };
+
+// ── Categorías: keywords en español e inglés ─────────────────────
+const CATEGORIES = {
+  guerra: {
+    label: "Guerra & Conflicto",
+    icon: "⚔",
+    keywords: [
+      "guerra","ataque","bombardeo","misil","cohete","bomba","explosión","muertos","víctimas",
+      "ofensiva","invasión","tropas","milicia","conflicto","combate","disparos","heridos",
+      "frente","trinchera","ceasefire","alto al fuego","tregua","ocupación","operación militar",
+      "drone","uav","armada","ejército","fuerzas armadas","muertes","fallecidos",
+      "war","attack","bombing","missile","rocket","troops","military","battle","combat","killed",
+      "offensive","invasion","airstrike","strike","casualties","soldiers","army","navy","airforce",
+      "hamas","hezbollah","isis","daesh","talibán","taliban","ukraine","ucrania","gaza","sudan",
+      "russia","rusia","israel","palestina","palestine","myanmar","yemen","siria","syria","irak","iraq"
+    ]
+  },
+  diplomacia: {
+    label: "Diplomacia",
+    icon: "🤝",
+    keywords: [
+      "acuerdo","tratado","cumbre","negociación","canciller","embajada","embajador",
+      "declaración conjunta","visita oficial","relaciones exteriores","alianza","pacto",
+      "onu","naciones unidas","otan","nato","g7","g20","ue","unión europea","asean",
+      "sanción","sanciones","expulsión","diplomático","diplomacia","mediación","mediador",
+      "delegación","protocolo","bilateral","multilateral","cooperación internacional",
+      "agreement","treaty","summit","negotiation","chancellor","ambassador","embassy",
+      "united nations","alliance","pact","sanction","diplomatic","mediation","delegation"
+    ]
+  },
+  politica: {
+    label: "Política",
+    icon: "🏛",
+    keywords: [
+      "elección","elecciones","presidente","gobierno","parlamento","partido","voto","votación",
+      "golpe","golpe de estado","congreso","senado","primer ministro","premier","canciller",
+      "democracia","dictadura","autoritarismo","referéndum","plebiscito","legislatura",
+      "oposición","coalición","campaña","candidato","mandatario","jefe de estado",
+      "ministro","gabinete","reforma","constitución","ley","proyecto de ley","decreto",
+      "election","president","government","parliament","party","vote","coup","congress",
+      "prime minister","democracy","dictatorship","referendum","legislation","minister",
+      "cabinet","reform","constitution","law","decree","political","politics","policy"
+    ]
+  },
+  economia: {
+    label: "Economía",
+    icon: "📊",
+    keywords: [
+      "economía","aranceles","arancel","mercado","inflación","pib","banco","petróleo",
+      "deuda","comercio","exportación","importación","fmi","banco mundial","reserva federal",
+      "fed","bolsa","acciones","inversión","déficit","superávit","recesión","crecimiento",
+      "empleo","desempleo","salario","precio","costo","subsidio","impuesto","fiscal",
+      "moneda","dólar","euro","yuan","crypto","criptomoneda","finanzas","presupuesto",
+      "economy","tariff","market","inflation","gdp","bank","oil","debt","trade","export",
+      "import","imf","world bank","stock","investment","recession","growth","employment",
+      "unemployment","wage","price","subsidy","tax","currency","dollar","finance","budget",
+      "gas","energía energética","opep","opec","brent","crude"
+    ]
+  },
+  clima: {
+    label: "Clima & Energía",
+    icon: "🌍",
+    keywords: [
+      "clima","cambio climático","co2","emisiones","calentamiento","inundación","sequía",
+      "huracán","tifón","ciclón","terremoto","tsunami","desastre natural","incendio forestal",
+      "energía renovable","solar","eólica","nuclear","hidrógeno","carbono","carbón",
+      "cop","acuerdo de paris","green deal","descarbonización","medioambiente","ambiental",
+      "biodiversidad","deforestación","contaminación","agua","océano","glaciar","ártico",
+      "climate","climate change","emissions","warming","flood","drought","hurricane",
+      "typhoon","cyclone","earthquake","tsunami","natural disaster","wildfire","renewable",
+      "solar","wind","nuclear","hydrogen","carbon","coal","environment","biodiversity",
+      "deforestation","pollution","ocean","glacier","arctic","cop28","cop30"
+    ]
+  },
+  tecnologia: {
+    label: "Tecnología",
+    icon: "💡",
+    keywords: [
+      "tecnología","inteligencia artificial","ia","ai","ciberseguridad","hackeo","hack",
+      "espacio","cohete espacial","satélite","nasa","spacex","chip","semiconductores",
+      "internet","redes sociales","datos","privacidad","vigilancia","5g","quantum",
+      "robot","automatización","deepfake","desinformación","regulación tecnológica",
+      "microsoft","google","apple","meta","amazon","openai","tiktok","huawei",
+      "technology","artificial intelligence","cybersecurity","hacking","space","rocket",
+      "satellite","chip","semiconductor","data","privacy","surveillance","quantum",
+      "robot","automation","deepfake","disinformation","regulation","social media"
+    ]
+  },
+  sociedad: {
+    label: "Sociedad",
+    icon: "👥",
+    keywords: [
+      "migrante","migrantes","refugiado","refugiados","asilo","migración","desplazados",
+      "derechos humanos","derechos","libertad","protestas","manifestación","huelga",
+      "salud","pandemia","vacuna","epidemia","hambre","pobreza","desigualdad","educación",
+      "mujer","género","feminismo","discriminación","racismo","minorías","religión",
+      "crimen","narcotráfico","corrupción","justicia","tribunal","pena","presos",
+      "humanitarian","migrant","refugee","asylum","migration","displaced",
+      "human rights","freedom","protest","strike","health","pandemic","vaccine",
+      "epidemic","hunger","poverty","inequality","education","gender","discrimination",
+      "racism","religion","crime","drug trafficking","corruption","justice","court"
+    ]
+  }
+};
+
+// ── Estado ───────────────────────────────────────────────────────
+let activeSources = new Set(["BBC","AJE","F24"]);
+let activeCats    = new Set(); // vacío = todas
+let allNews       = [];
+
+// ── Categorización ───────────────────────────────────────────────
+function categorize(item) {
+  const text = ((item.title || "") + " " + (item.desc || "")).toLowerCase();
+  const matched = [];
+  for (const [key, cat] of Object.entries(CATEGORIES)) {
+    if (cat.keywords.some(kw => text.includes(kw))) {
+      matched.push(key);
+    }
+  }
+  return matched.length > 0 ? matched : ["general"];
+}
+
+function tagAllNews() {
+  allNews.forEach(item => {
+    item.cats = categorize(item);
+  });
+}
+
+// ── Toggle fuentes ───────────────────────────────────────────────
+function toggleSource(src) {
   const chip = document.getElementById("chip-" + src);
-  if (active.has(src)) { active.delete(src); chip.className = "chip"; }
-  else { active.add(src); chip.className = "chip on-" + src.toLowerCase(); }
+  if (activeSources.has(src)) {
+    activeSources.delete(src);
+    chip.className = "chip";
+  } else {
+    activeSources.add(src);
+    chip.className = "chip on-" + src.toLowerCase();
+  }
   render();
 }
+
+// ── Toggle categorías ────────────────────────────────────────────
+function toggleAll() {
+  activeCats.clear();
+  // Apagar todos los chips de categoría
+  Object.keys(CATEGORIES).forEach(k => {
+    document.getElementById("cat-" + k).classList.remove("active");
+  });
+  document.getElementById("cat-all").classList.add("active");
+  render();
+}
+
+function toggleCat(key) {
+  if (activeCats.has(key)) {
+    activeCats.delete(key);
+    document.getElementById("cat-" + key).classList.remove("active");
+  } else {
+    activeCats.add(key);
+    document.getElementById("cat-" + key).classList.add("active");
+    document.getElementById("cat-all").classList.remove("active");
+  }
+  // Si quedan 0 activas, volver a "Todas"
+  if (activeCats.size === 0) {
+    document.getElementById("cat-all").classList.add("active");
+  }
+  render();
+}
+
+// ── Carga de datos ───────────────────────────────────────────────
+window.onload = load;
+
 async function load() {
   const btn = document.getElementById("refresh-btn");
   btn.disabled = true;
@@ -95,10 +327,14 @@ async function load() {
   document.getElementById("list").innerHTML = "";
   document.getElementById("stats").style.display = "none";
   try {
-    const res = await fetch(API_URL, { signal: AbortSignal.timeout(25000) });
+    const controller = new AbortController();
+    const timeoutId  = setTimeout(() => controller.abort(), 25000);
+    const res  = await fetch(API_URL, { signal: controller.signal });
+    clearTimeout(timeoutId);
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || "Error en el script");
     allNews = data.items || [];
+    tagAllNews();
     const d = new Date(data.updated);
     document.getElementById("ts").textContent = "Actualizado: " + d.toLocaleTimeString("es-CL", { hour:"2-digit", minute:"2-digit" });
     setStatus(`✓ ${allNews.length} noticias cargadas.`, "done");
@@ -109,40 +345,82 @@ async function load() {
   }
   btn.disabled = false;
 }
+
+// ── Render ───────────────────────────────────────────────────────
 function render() {
-  const list = document.getElementById("list");
+  const list  = document.getElementById("list");
   const stats = document.getElementById("stats");
-  const items = allNews.filter(i => active.has(i.source));
+
+  // Filtrar por fuente
+  let items = allNews.filter(i => activeSources.has(i.source));
+
+  // Filtrar por categoría (si hay alguna activa)
+  if (activeCats.size > 0) {
+    items = items.filter(i => i.cats && i.cats.some(c => activeCats.has(c)));
+  }
+
   if (!items.length) {
-    list.innerHTML = `<div class="empty"><div class="empty-icon">∅</div><p>No hay noticias.<br>Activa al menos una fuente o actualiza.</p></div>`;
+    list.innerHTML = `<div class="empty"><div class="empty-icon">∅</div><p>No hay noticias.<br>Activa al menos una fuente o categoría.</p></div>`;
     stats.style.display = "none";
     return;
   }
+
+  // Stats
   const counts = {};
   items.forEach(i => counts[i.source] = (counts[i.source]||0)+1);
   stats.innerHTML = `<b>${items.length}</b> noticias · ` + Object.entries(counts).map(([s,n]) => `${LABELS[s]}: <b style="color:${COLORS[s]}">${n}</b>`).join(" · ");
   stats.style.display = "flex";
+
+  // Cards
   list.innerHTML = "";
   items.forEach((item, i) => {
     const card = document.createElement("div");
     card.className = "card";
     card.style.animation = `fadeUp 0.25s ease ${Math.min(i*0.025,0.5)}s both`;
-    card.innerHTML = `<div class="card-meta"><span class="badge badge-${item.source}">${LABELS[item.source]}</span><span class="card-date">${formatDate(item.pubDate)}</span></div><div class="card-title"><a href="${esc(item.link)}" target="_blank" rel="noopener">${esc(item.title)}</a></div>${item.desc ? `<div class="card-desc">${esc(item.desc)}</div>` : ""}`;
+
+    // Tags de categoría visibles en la card (excluir "general")
+    const visibleCats = (item.cats || []).filter(c => c !== "general");
+    const catTagsHTML = visibleCats.map(c => {
+      const cat = CATEGORIES[c];
+      return cat ? `<span class="cat-tag">${cat.icon} ${cat.label}</span>` : "";
+    }).join("");
+
+    card.innerHTML = `
+      <div class="card-meta">
+        <span class="badge badge-${item.source}">${LABELS[item.source]}</span>
+        ${catTagsHTML}
+        <span class="card-date">${formatDate(item.pubDate)}</span>
+      </div>
+      <div class="card-title"><a href="${esc(item.link)}" target="_blank" rel="noopener">${esc(item.title)}</a></div>
+      ${item.desc ? `<div class="card-desc">${esc(item.desc)}</div>` : ""}
+    `;
     list.appendChild(card);
   });
 }
-function setStatus(html, cls) { const s = document.getElementById("status"); s.innerHTML = html; s.className = cls; }
+
+// ── Utilidades ───────────────────────────────────────────────────
+function setStatus(html, cls) {
+  const s = document.getElementById("status");
+  s.innerHTML = html;
+  s.className = cls;
+}
+
 function formatDate(str) {
   if (!str) return "";
-  const d = new Date(str);
+  const d    = new Date(str);
   const diff = Math.floor((Date.now() - d) / 60000);
   if (isNaN(diff)) return str;
-  if (diff < 1) return "ahora";
-  if (diff < 60) return `hace ${diff} min`;
+  if (diff < 1)    return "ahora";
+  if (diff < 60)   return `hace ${diff} min`;
   if (diff < 1440) return `hace ${Math.floor(diff/60)} h`;
   return d.toLocaleDateString("es-CL", { day:"numeric", month:"short" });
 }
-function esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+function esc(s) {
+  return String(s||"")
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
 </script>
 </body>
 </html>
