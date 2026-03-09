@@ -263,6 +263,53 @@
   .summary-text { font-size:.85rem; color:var(--text); line-height:1.8; }
   .summary-error { font-size:.78rem; color:var(--red); font-family:'IBM Plex Mono',monospace; }
 
+  /* ── Separadores de fecha ── */
+  .date-group { margin-bottom: 4px; }
+  .date-separator {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 0 10px;
+  }
+  .date-separator:first-child { padding-top: 0; }
+  .date-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .6rem;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    color: var(--acc-dim);
+    white-space: nowrap;
+  }
+  .date-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(200,169,110,.2), transparent);
+  }
+  .date-count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .55rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  /* ── Botón ver más ── */
+  .btn-load-more {
+    display: block;
+    margin: 28px auto 0;
+    padding: 8px 28px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .65rem;
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    color: var(--acc-dim);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .btn-load-more:hover { border-color: var(--acc-dim); color: var(--accent); }
+
   .empty { text-align:center; padding:80px 20px; color:var(--text-dim); }
   .empty-icon { font-size:2rem; opacity:.25; margin-bottom:14px; }
   .empty p { font-family:'IBM Plex Mono',monospace; font-size:.72rem; line-height:2; }
@@ -352,6 +399,7 @@ let activeCats    = new Set();
 let allNews       = [];
 const summaryCache = {};
 let briefingCollapsed = false;
+let visibleDays = 5; // días visibles por defecto
 
 // ── Briefing ─────────────────────────────────────────────────────
 async function loadBriefing(force = false) {
@@ -575,6 +623,24 @@ async function load() {
   btn.disabled = false;
 }
 
+function formatDayLabel(dateStr) {
+  const d = new Date(dateStr);
+  if (isNaN(d)) return null;
+  const today     = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+  const sameDay = (a, b) => a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
+  if (sameDay(d, today))     return "Hoy · " + d.toLocaleDateString("es-CL", { day:"numeric", month:"long" });
+  if (sameDay(d, yesterday)) return "Ayer · " + d.toLocaleDateString("es-CL", { day:"numeric", month:"long" });
+  return d.toLocaleDateString("es-CL", { weekday:"long", day:"numeric", month:"long" });
+}
+
+function getDayKey(dateStr) {
+  const d = new Date(dateStr);
+  if (isNaN(d)) return "sin-fecha";
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+
 function render() {
   const list  = document.getElementById("list");
   const stats = document.getElementById("stats");
@@ -583,7 +649,6 @@ function render() {
   if (activeCats.size > 0) {
     items = items.filter(i => i.cats && i.cats.some(c => activeCats.has(c)));
   } else {
-    // En vista "Todas", ocultar noticias sin categoría reconocida
     items = items.filter(i => i.cats && i.cats.some(c => c !== "general"));
   }
 
@@ -593,54 +658,98 @@ function render() {
     return;
   }
 
+  // Agrupar por día
+  const groups = {};
+  const groupOrder = [];
+  items.forEach(item => {
+    const key = getDayKey(item.pubDate);
+    if (!groups[key]) { groups[key] = []; groupOrder.push(key); }
+    groups[key].push(item);
+  });
+
+  // Limitar a visibleDays días
+  const visibleGroups = groupOrder.slice(0, visibleDays);
+  const hiddenGroups  = groupOrder.slice(visibleDays);
+  const visibleItems  = visibleGroups.reduce((acc, k) => acc.concat(groups[k]), []);
+
   const counts = {};
-  items.forEach(i => counts[i.source] = (counts[i.source]||0)+1);
-  stats.innerHTML = `<b>${items.length}</b> noticias · ` + Object.entries(counts).map(([s,n]) => `${LABELS[s]}: <b style="color:${COLORS[s]}">${n}</b>`).join(" · ");
+  visibleItems.forEach(i => counts[i.source] = (counts[i.source]||0)+1);
+  stats.innerHTML = `<b>${visibleItems.length}</b> noticias · ` + Object.entries(counts).map(([s,n]) => `${LABELS[s]}: <b style="color:${COLORS[s]}">${n}</b>`).join(" · ");
   stats.style.display = "flex";
 
   list.innerHTML = "";
-  items.forEach((item, idx) => {
-    const card   = document.createElement("div");
-    card.className = "card";
-    card.style.animation = `fadeUp 0.25s ease ${Math.min(idx*0.025,0.5)}s both`;
-    const cardId = "card-" + idx;
+  let globalIdx = 0;
 
-    const visibleCats = (item.cats||[]).filter(c => c !== "general");
-    const catTagsHTML = visibleCats.map(c => {
-      const cat = CATEGORIES[c];
-      return cat ? `<span class="cat-tag">${cat.icon} ${cat.label}</span>` : "";
-    }).join("");
+  visibleGroups.forEach(dayKey => {
+    const dayItems = groups[dayKey];
+    const label    = formatDayLabel(dayItems[0].pubDate);
 
-    card.innerHTML = `
-      <div class="card-meta">
-        <span class="badge badge-${item.source}">${LABELS[item.source]}</span>
-        ${catTagsHTML}
-        <span class="card-date">${formatDate(item.pubDate)}</span>
-      </div>
-      <div class="card-title">
-        <a href="${esc(item.link)}" target="_blank" rel="noopener">${esc(item.title)}</a>
-      </div>
-      ${item.desc ? `<div class="card-desc">${esc(item.desc)}</div>` : ""}
-      <div class="card-footer">
-        <button class="btn-summarize" id="btn-${cardId}">✦ Resumir con IA</button>
-      </div>
-      <div class="summary-panel" id="panel-${cardId}">
-        <div class="summary-label"><span class="ai-dot" id="dot-${cardId}"></span>Análisis · IA</div>
-        <div class="summary-text" id="text-${cardId}"></div>
-      </div>
-    `;
+    // Separador de fecha
+    const sep = document.createElement("div");
+    sep.className = "date-separator";
+    sep.innerHTML = `<span class="date-label">${label}</span><span class="date-line"></span><span class="date-count">${dayItems.length} noticias</span>`;
+    list.appendChild(sep);
 
-    const btn = card.querySelector(".btn-summarize");
-    btn._title = item.title || "";
-    btn._desc  = item.desc  || "";
-    btn._link  = item.link  || "";
-    btn._id    = cardId;
-    btn.addEventListener("click", function() {
-      toggleSummary(this._id, this._title, this._desc, this._link);
+    // Cards del día
+    const group = document.createElement("div");
+    group.className = "date-group";
+
+    dayItems.forEach(item => {
+      const card   = document.createElement("div");
+      card.className = "card";
+      card.style.animation = `fadeUp 0.25s ease ${Math.min(globalIdx*0.025,0.5)}s both`;
+      const cardId = "card-" + globalIdx;
+      globalIdx++;
+
+      const visibleCats = (item.cats||[]).filter(c => c !== "general");
+      const catTagsHTML = visibleCats.map(c => {
+        const cat = CATEGORIES[c];
+        return cat ? `<span class="cat-tag">${cat.icon} ${cat.label}</span>` : "";
+      }).join("");
+
+      card.innerHTML = `
+        <div class="card-meta">
+          <span class="badge badge-${item.source}">${LABELS[item.source]}</span>
+          ${catTagsHTML}
+          <span class="card-date">${formatDate(item.pubDate)}</span>
+        </div>
+        <div class="card-title">
+          <a href="${esc(item.link)}" target="_blank" rel="noopener">${esc(item.title)}</a>
+        </div>
+        ${item.desc ? `<div class="card-desc">${esc(item.desc)}</div>` : ""}
+        <div class="card-footer">
+          <button class="btn-summarize" id="btn-${cardId}">✦ Resumir con IA</button>
+        </div>
+        <div class="summary-panel" id="panel-${cardId}">
+          <div class="summary-label"><span class="ai-dot" id="dot-${cardId}"></span>Análisis · IA</div>
+          <div class="summary-text" id="text-${cardId}"></div>
+        </div>
+      `;
+
+      const btn = card.querySelector(".btn-summarize");
+      btn._title = item.title || "";
+      btn._desc  = item.desc  || "";
+      btn._link  = item.link  || "";
+      btn._id    = cardId;
+      btn.addEventListener("click", function() {
+        toggleSummary(this._id, this._title, this._desc, this._link);
+      });
+
+      group.appendChild(card);
     });
 
-    list.appendChild(card);
+    list.appendChild(group);
   });
+
+  // Botón "Ver más" si hay días ocultos
+  if (hiddenGroups.length > 0) {
+    const btn = document.createElement("button");
+    btn.className = "btn-load-more";
+    const totalHidden = hiddenGroups.reduce((acc, k) => acc + groups[k].length, 0);
+    btn.textContent = `↓ Ver ${totalHidden} noticias anteriores (${hiddenGroups.length} días más)`;
+    btn.onclick = () => { visibleDays += 5; render(); };
+    list.appendChild(btn);
+  }
 }
 
 async function toggleSummary(cardId, title, desc, link) {
