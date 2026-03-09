@@ -277,16 +277,17 @@ function render() {
     const btn = card.querySelector(".btn-summarize");
     btn._title = item.title || "";
     btn._desc  = item.desc  || "";
+    btn._link  = item.link  || "";
     btn._id    = cardId;
     btn.addEventListener("click", function() {
-      toggleSummary(this._id, this._title, this._desc);
+      toggleSummary(this._id, this._title, this._desc, this._link);
     });
 
     list.appendChild(card);
   });
 }
 
-async function toggleSummary(cardId, title, desc) {
+async function toggleSummary(cardId, title, desc, link) {
   const panel = document.getElementById("panel-" + cardId);
   const btn   = document.getElementById("btn-"   + cardId);
   const dot   = document.getElementById("dot-"   + cardId);
@@ -319,7 +320,8 @@ async function toggleSummary(cardId, title, desc) {
   try {
     const url = API_URL + "?action=summarize"
       + "&title=" + encodeURIComponent(title)
-      + "&desc="  + encodeURIComponent(desc);
+      + "&desc="  + encodeURIComponent(desc)
+      + "&url="   + encodeURIComponent(link);
 
     const controller = new AbortController();
     const timeoutId  = setTimeout(() => controller.abort(), 35000);
