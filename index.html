@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Diplomatica</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg:#0e0f11; --surface:#16181c; --border:#2a2d33;
@@ -23,7 +23,171 @@
 
   .wrap { max-width:960px; margin:0 auto; padding:0 20px 60px; }
 
-  .controls { padding:16px 0 12px; border-bottom:1px solid var(--border); margin-bottom:0; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  /* ══════════════════════════════════════════════
+     BRIEFING SECTION
+  ══════════════════════════════════════════════ */
+  #briefing-section {
+    margin: 28px 0 0;
+    border: 1px solid rgba(200,169,110,.22);
+    border-radius: 5px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(200,169,110,.04) 0%, rgba(22,24,28,.0) 100%);
+  }
+
+  .briefing-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(200,169,110,.14);
+    background: rgba(200,169,110,.05);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .briefing-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .briefing-kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .55rem;
+    text-transform: uppercase;
+    letter-spacing: .22em;
+    color: var(--acc-dim);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .briefing-kicker-line {
+    width: 20px;
+    height: 1px;
+    background: var(--acc-dim);
+  }
+
+  .briefing-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.0rem;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .briefing-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #briefing-date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .58rem;
+    color: var(--text-dim);
+  }
+
+  .btn-briefing-refresh {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .55rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    padding: 3px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    background: rgba(200,169,110,.08);
+    border: 1px solid rgba(200,169,110,.2);
+    color: var(--acc-dim);
+    transition: all .15s;
+  }
+  .btn-briefing-refresh:hover { background: rgba(200,169,110,.16); color: var(--accent); }
+  .btn-briefing-refresh:disabled { opacity: .35; cursor: not-allowed; }
+
+  /* Estado de carga del briefing */
+  #briefing-status {
+    padding: 28px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .65rem;
+    color: var(--acc-dim);
+  }
+
+  /* Cuerpo del briefing */
+  #briefing-body {
+    padding: 20px 24px 24px;
+    display: none;
+  }
+
+  /* Cada entrada del briefing */
+  .briefing-item {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(200,169,110,.08);
+    display: grid;
+    grid-template-columns: 3px 1fr;
+    gap: 0 16px;
+    animation: fadeUp .3s ease both;
+  }
+  .briefing-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .briefing-item:first-child { padding-top: 0; }
+
+  .briefing-stripe {
+    width: 3px;
+    background: linear-gradient(to bottom, var(--accent), var(--acc-dim));
+    border-radius: 2px;
+    align-self: stretch;
+    min-height: 20px;
+  }
+
+  .briefing-item-content {}
+
+  .briefing-topic {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .62rem;
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .briefing-text {
+    font-size: .875rem;
+    color: var(--text);
+    line-height: 1.78;
+    font-weight: 300;
+  }
+
+  /* Error del briefing */
+  .briefing-error {
+    padding: 20px 24px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .65rem;
+    color: var(--red);
+    display: none;
+  }
+
+  /* Toggle para colapsar/expandir */
+  .btn-briefing-toggle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .55rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    padding: 3px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    transition: all .15s;
+  }
+  .btn-briefing-toggle:hover { border-color: var(--acc-dim); color: var(--acc-dim); }
+
+  /* ══════════════════════════════════════════════
+     CONTROLS & FEED (sin cambios)
+  ══════════════════════════════════════════════ */
+  .controls { padding:16px 0 12px; border-bottom:1px solid var(--border); margin-bottom:0; margin-top:20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
   .mono-label { font-family:'IBM Plex Mono',monospace; font-size:.6rem; text-transform:uppercase; letter-spacing:.2em; color:var(--text-dim); white-space:nowrap; }
 
   .chip { display:flex; align-items:center; gap:6px; background:#16181c; border:1px solid var(--border); border-radius:3px; padding:5px 13px; font-family:'IBM Plex Mono',monospace; font-size:.65rem; color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none; }
@@ -66,7 +230,6 @@
   .card-title { font-family:'Playfair Display',serif; font-size:1.02rem; color:var(--bright); line-height:1.4; margin-bottom:7px; }
   .card-desc { font-size:.83rem; color:var(--text-dim); line-height:1.65; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
 
-  /* ── Botón resumir ── */
   .card-footer { margin-top:11px; min-height:24px; }
   .btn-summarize {
     font-family:'IBM Plex Mono',monospace; font-size:.58rem; text-transform:uppercase;
@@ -80,7 +243,6 @@
   .btn-summarize:disabled { opacity:.35 !important; cursor:not-allowed; }
   .btn-summarize.open { opacity:1 !important; pointer-events:auto; color:var(--accent); border-color:var(--acc-dim); background:rgba(200,169,110,.1); }
 
-  /* ── Panel de resumen inline ── */
   .summary-panel {
     margin-top:13px; padding:15px 17px;
     background:rgba(200,169,110,.04);
@@ -118,6 +280,31 @@
 </header>
 
 <div class="wrap">
+
+  <!-- ══ BRIEFING SECTION ══════════════════════════════════════ -->
+  <div id="briefing-section">
+    <div class="briefing-header">
+      <div class="briefing-header-left">
+        <span class="briefing-kicker"><span class="briefing-kicker-line"></span>Despacho</span>
+        <span class="briefing-title">Actualidad Internacional</span>
+      </div>
+      <div class="briefing-meta">
+        <span id="briefing-date"></span>
+        <button class="btn-briefing-toggle" id="btn-briefing-toggle" onclick="toggleBriefingPanel()">Colapsar</button>
+        <button class="btn-briefing-refresh" id="btn-briefing-refresh" onclick="loadBriefing(true)">↻ Regenerar</button>
+      </div>
+    </div>
+
+    <div id="briefing-status">
+      <span class="spinner"></span>
+      Generando análisis de actualidad…
+    </div>
+
+    <div id="briefing-body"></div>
+    <div id="briefing-error" class="briefing-error"></div>
+  </div>
+
+  <!-- ══ CONTROLES DE FUENTES Y CATEGORÍAS ══════════════════════ -->
   <div class="controls">
     <span class="mono-label">Fuentes</span>
     <div class="chip on-bbc" id="chip-BBC" onclick="toggleSource('BBC')"><span class="dot"></span>BBC Mundo</div>
@@ -164,7 +351,141 @@ let activeSources = new Set(["BBC","AJE","F24"]);
 let activeCats    = new Set();
 let allNews       = [];
 const summaryCache = {};
+let briefingCollapsed = false;
 
+// ── Briefing ─────────────────────────────────────────────────────
+async function loadBriefing(force = false) {
+  const statusEl = document.getElementById("briefing-status");
+  const bodyEl   = document.getElementById("briefing-body");
+  const errorEl  = document.getElementById("briefing-error");
+  const btnRef   = document.getElementById("btn-briefing-refresh");
+  const dateEl   = document.getElementById("briefing-date");
+
+  bodyEl.style.display = "none";
+  errorEl.style.display = "none";
+  statusEl.style.display = "flex";
+  btnRef.disabled = true;
+
+  try {
+    const controller = new AbortController();
+    const timeoutId  = setTimeout(() => controller.abort(), 40000);
+    const res  = await fetch(API_URL + "?action=briefing", { signal: controller.signal });
+    clearTimeout(timeoutId);
+    const data = await res.json();
+
+    if (!data.ok) throw new Error(data.error || "Error al generar briefing");
+
+    const d = new Date(data.updated);
+    dateEl.textContent = d.toLocaleDateString("es-CL", { weekday:"long", day:"numeric", month:"long" })
+      + " · " + d.toLocaleTimeString("es-CL", { hour:"2-digit", minute:"2-digit" });
+
+    renderBriefing(data.briefing);
+    statusEl.style.display = "none";
+    bodyEl.style.display = "block";
+
+  } catch(e) {
+    statusEl.style.display = "none";
+    errorEl.style.display = "block";
+    errorEl.textContent = "⚠ No se pudo generar el briefing: " + e.message;
+  }
+
+  btnRef.disabled = false;
+}
+
+function renderBriefing(text) {
+  const bodyEl = document.getElementById("briefing-body");
+  bodyEl.innerHTML = "";
+
+  // Parsear el formato "TEMA EN MAYÚSCULAS: párrafo."
+  // Soporta líneas que empiezan con texto en mayúsculas seguido de ":"
+  const lines = text.split("\n").filter(l => l.trim().length > 0);
+  const items = [];
+  let currentTopic = null;
+  let currentText  = [];
+
+  lines.forEach(line => {
+    const trimmed = line.trim();
+    // Detectar línea de tema: empieza con texto en mayúsculas seguido de ":"
+    // Ejemplo: "GUERRA EN UCRANIA: Lorem ipsum..."
+    const topicMatch = trimmed.match(/^([A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑ\s&·\-\/]{2,60}):\s*(.*)/);
+    if (topicMatch) {
+      // Guardar el anterior si existe
+      if (currentTopic) {
+        items.push({ topic: currentTopic, text: currentText.join(" ").trim() });
+      }
+      currentTopic = topicMatch[1].trim();
+      currentText  = topicMatch[2] ? [topicMatch[2].trim()] : [];
+    } else {
+      // Continuación del párrafo actual
+      if (currentTopic) {
+        currentText.push(trimmed);
+      } else {
+        // Texto antes del primer tema (intro)
+        items.push({ topic: "", text: trimmed });
+      }
+    }
+  });
+
+  // Guardar el último
+  if (currentTopic) {
+    items.push({ topic: currentTopic, text: currentText.join(" ").trim() });
+  }
+
+  // Si no encontró el formato esperado, mostrar como texto plano
+  if (items.length === 0) {
+    const div = document.createElement("div");
+    div.className = "briefing-text";
+    div.style.padding = "0";
+    div.textContent = text;
+    bodyEl.appendChild(div);
+    return;
+  }
+
+  items.forEach((item, i) => {
+    const el = document.createElement("div");
+    el.className = "briefing-item";
+    el.style.animationDelay = (i * 0.07) + "s";
+    el.innerHTML = `
+      <div class="briefing-stripe"></div>
+      <div class="briefing-item-content">
+        ${item.topic ? `<div class="briefing-topic">${escapeHtml(item.topic)}</div>` : ""}
+        <div class="briefing-text">${escapeHtml(item.text)}</div>
+      </div>
+    `;
+    bodyEl.appendChild(el);
+  });
+}
+
+function toggleBriefingPanel() {
+  const bodyEl   = document.getElementById("briefing-body");
+  const statusEl = document.getElementById("briefing-status");
+  const errorEl  = document.getElementById("briefing-error");
+  const btn      = document.getElementById("btn-briefing-toggle");
+
+  briefingCollapsed = !briefingCollapsed;
+
+  if (briefingCollapsed) {
+    const wasVisible = bodyEl.style.display !== "none" || statusEl.style.display !== "none";
+    bodyEl.dataset.prevDisplay   = bodyEl.style.display;
+    statusEl.dataset.prevDisplay = statusEl.style.display;
+    errorEl.dataset.prevDisplay  = errorEl.style.display;
+    bodyEl.style.display   = "none";
+    statusEl.style.display = "none";
+    errorEl.style.display  = "none";
+    btn.textContent = "Expandir";
+  } else {
+    bodyEl.style.display   = bodyEl.dataset.prevDisplay   || "none";
+    statusEl.style.display = statusEl.dataset.prevDisplay || "none";
+    errorEl.style.display  = errorEl.dataset.prevDisplay  || "none";
+    btn.textContent = "Colapsar";
+  }
+}
+
+function escapeHtml(s) {
+  return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+// ── Feed ──────────────────────────────────────────────────────────
 function categorize(item) {
   const text = ((item.title||"") + " " + (item.desc||"")).toLowerCase();
   const matched = [];
@@ -195,7 +516,11 @@ function toggleCat(key) {
   render();
 }
 
-window.onload = load;
+window.onload = () => {
+  load();
+  loadBriefing();
+};
+
 async function load() {
   const btn = document.getElementById("refresh-btn");
   btn.disabled = true;
@@ -253,7 +578,6 @@ function render() {
       return cat ? `<span class="cat-tag">${cat.icon} ${cat.label}</span>` : "";
     }).join("");
 
-    // Guardamos title/desc como data-attributes para evitar problemas de escapado en onclick
     card.innerHTML = `
       <div class="card-meta">
         <span class="badge badge-${item.source}">${LABELS[item.source]}</span>
@@ -268,12 +592,11 @@ function render() {
         <button class="btn-summarize" id="btn-${cardId}">✦ Resumir con IA</button>
       </div>
       <div class="summary-panel" id="panel-${cardId}">
-        <div class="summary-label"><span class="ai-dot" id="dot-${cardId}"></span>Análisis · Claude</div>
+        <div class="summary-label"><span class="ai-dot" id="dot-${cardId}"></span>Análisis · IA</div>
         <div class="summary-text" id="text-${cardId}"></div>
       </div>
     `;
 
-    // Adjuntamos datos limpios al botón para evitar problemas con caracteres especiales
     const btn = card.querySelector(".btn-summarize");
     btn._title = item.title || "";
     btn._desc  = item.desc  || "";
@@ -293,7 +616,6 @@ async function toggleSummary(cardId, title, desc, link) {
   const dot   = document.getElementById("dot-"   + cardId);
   const text  = document.getElementById("text-"  + cardId);
 
-  // Colapsar si ya está abierto
   if (panel.classList.contains("visible")) {
     panel.classList.remove("visible");
     btn.textContent = "✦ Resumir con IA";
@@ -301,7 +623,6 @@ async function toggleSummary(cardId, title, desc, link) {
     return;
   }
 
-  // Mostrar desde caché
   if (summaryCache[cardId]) {
     text.innerHTML = summaryCache[cardId];
     panel.classList.add("visible");
@@ -310,7 +631,6 @@ async function toggleSummary(cardId, title, desc, link) {
     return;
   }
 
-  // Llamar al script
   btn.disabled = true;
   btn.textContent = "Generando...";
   dot.classList.add("pulsing");
