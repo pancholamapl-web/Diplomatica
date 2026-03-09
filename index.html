@@ -490,13 +490,22 @@ function categorize(item) {
   const title = (item.title || "").toLowerCase();
   const desc  = (item.desc  || "").toLowerCase();
 
+  // Coincidencia por palabra completa (evita "chip" dentro de "Chipre", etc.)
+  function matchesWord(text, kw) {
+    // Keywords de más de una palabra: búsqueda normal por substring
+    if (kw.includes(" ")) return text.includes(kw);
+    // Keywords de una sola palabra: requiere límite de palabra
+    const re = new RegExp("(?:^|[\\s,.:;"'\\-\\(\\)/])" + kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?:[\\s,.:;"'\\-\\(\\)/]|$)");
+    return re.test(text);
+  }
+
   const scores = {};
 
   for (const [key, cat] of Object.entries(CATEGORIES)) {
     let score = 0;
     for (const kw of cat.keywords) {
-      if (title.includes(kw)) score += 3;  // título vale 3x más
-      if (desc.includes(kw))  score += 1;
+      if (matchesWord(title, kw)) score += 3;  // título vale 3x más
+      if (matchesWord(desc,  kw)) score += 1;
     }
     if (score > 0) scores[key] = score;
   }
