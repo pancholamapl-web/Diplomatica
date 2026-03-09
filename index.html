@@ -16,20 +16,16 @@
   a { text-decoration:none; color:inherit; transition:color .15s; }
   a:hover { color:var(--accent); }
 
-  /* ── Header ── */
   header { border-bottom:1px solid var(--border); padding:14px 28px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; background:rgba(14,15,17,.97); backdrop-filter:blur(8px); }
   .logo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--accent); letter-spacing:.04em; }
   .logo-sub { font-family:'IBM Plex Mono',monospace; font-size:.6rem; color:var(--text-dim); letter-spacing:.18em; text-transform:uppercase; margin-top:2px; }
   #ts { font-family:'IBM Plex Mono',monospace; font-size:.62rem; color:var(--text-dim); }
 
-  /* ── Layout ── */
   .wrap { max-width:960px; margin:0 auto; padding:0 20px 60px; }
 
-  /* ── Controls row: fuentes ── */
   .controls { padding:16px 0 12px; border-bottom:1px solid var(--border); margin-bottom:0; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
   .mono-label { font-family:'IBM Plex Mono',monospace; font-size:.6rem; text-transform:uppercase; letter-spacing:.2em; color:var(--text-dim); white-space:nowrap; }
 
-  /* ── Chips de fuentes ── */
   .chip { display:flex; align-items:center; gap:6px; background:#16181c; border:1px solid var(--border); border-radius:3px; padding:5px 13px; font-family:'IBM Plex Mono',monospace; font-size:.65rem; color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none; }
   .chip .dot { width:6px; height:6px; border-radius:50%; background:currentColor; flex-shrink:0; }
   .chip.on-bbc { border-color:rgba(200,60,60,.5); color:#d47070; background:rgba(200,60,60,.08); }
@@ -40,33 +36,14 @@
   .btn-refresh:hover { background:rgba(200,169,110,.18); }
   .btn-refresh:disabled { opacity:.4; cursor:not-allowed; }
 
-  /* ── Separador ── */
-  .divider { height:1px; background:var(--border); margin:0; }
-
-  /* ── Controls row: categorías ── */
   .cat-controls { padding:10px 0 14px; border-bottom:1px solid var(--border); margin-bottom:20px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-
-  /* ── Chips de categoría ── */
-  .cat-chip {
-    display:flex; align-items:center; gap:5px;
-    background:#16181c; border:1px solid var(--border); border-radius:3px;
-    padding:4px 11px; font-family:'IBM Plex Mono',monospace; font-size:.62rem;
-    color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none;
-  }
+  .cat-chip { display:flex; align-items:center; gap:5px; background:#16181c; border:1px solid var(--border); border-radius:3px; padding:4px 11px; font-family:'IBM Plex Mono',monospace; font-size:.62rem; color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none; }
   .cat-chip .cat-icon { font-size:.75rem; line-height:1; }
   .cat-chip.active { border-color:rgba(200,169,110,.5); color:var(--accent); background:rgba(200,169,110,.08); }
   .cat-chip:hover:not(.active) { border-color:#3a3d45; color:#9a9ea8; }
-
-  /* Botón "Todas" */
-  .cat-all {
-    display:flex; align-items:center;
-    background:#16181c; border:1px solid var(--border); border-radius:3px;
-    padding:4px 11px; font-family:'IBM Plex Mono',monospace; font-size:.62rem;
-    color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none;
-  }
+  .cat-all { display:flex; align-items:center; background:#16181c; border:1px solid var(--border); border-radius:3px; padding:4px 11px; font-family:'IBM Plex Mono',monospace; font-size:.62rem; color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none; }
   .cat-all.active { border-color:rgba(200,169,110,.5); color:var(--accent); background:rgba(200,169,110,.08); }
 
-  /* ── Status / Stats ── */
   #status { font-family:'IBM Plex Mono',monospace; font-size:.65rem; min-height:18px; margin-bottom:12px; display:flex; align-items:center; gap:7px; }
   #status.idle { color:var(--text-dim); } #status.loading { color:var(--accent); } #status.done { color:var(--green); } #status.error { color:var(--red); }
   @keyframes spin { to { transform:rotate(360deg); } }
@@ -74,9 +51,9 @@
   #stats { font-family:'IBM Plex Mono',monospace; font-size:.63rem; color:var(--text-dim); margin-bottom:14px; display:none; gap:16px; flex-wrap:wrap; }
   #stats b { color:var(--text); font-weight:400; }
 
-  /* ── Cards ── */
   #list { display:flex; flex-direction:column; gap:2px; }
   @keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+
   .card { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:15px 18px; transition:border-color .15s; }
   .card:hover { border-color:var(--acc-dim); }
   .card-meta { display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
@@ -84,20 +61,46 @@
   .badge-BBC { background:rgba(200,60,60,.12); color:#d47070; border:1px solid rgba(200,60,60,.3); }
   .badge-AJE { background:rgba(255,168,0,.12); color:#e8a83a; border:1px solid rgba(255,168,0,.3); }
   .badge-F24 { background:rgba(0,120,200,.12); color:#5aa0d4; border:1px solid rgba(0,120,200,.3); }
-
-  /* ── Tags de categoría en las cards ── */
-  .cat-tag {
-    font-family:'IBM Plex Mono',monospace; font-size:.56rem; text-transform:uppercase;
-    letter-spacing:.1em; padding:2px 6px; border-radius:2px;
-    background:rgba(200,169,110,.07); color:var(--acc-dim);
-    border:1px solid rgba(200,169,110,.18);
-  }
-
+  .cat-tag { font-family:'IBM Plex Mono',monospace; font-size:.56rem; text-transform:uppercase; letter-spacing:.1em; padding:2px 6px; border-radius:2px; background:rgba(200,169,110,.07); color:var(--acc-dim); border:1px solid rgba(200,169,110,.18); }
   .card-date { font-family:'IBM Plex Mono',monospace; font-size:.6rem; color:var(--text-dim); margin-left:auto; }
   .card-title { font-family:'Playfair Display',serif; font-size:1.02rem; color:var(--bright); line-height:1.4; margin-bottom:7px; }
   .card-desc { font-size:.83rem; color:var(--text-dim); line-height:1.65; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
 
-  /* ── Empty state ── */
+  /* ── Botón resumir ── */
+  .card-footer { margin-top:11px; min-height:24px; }
+  .btn-summarize {
+    font-family:'IBM Plex Mono',monospace; font-size:.58rem; text-transform:uppercase;
+    letter-spacing:.12em; padding:4px 12px; border-radius:2px; cursor:pointer;
+    background:rgba(200,169,110,.07); border:1px solid rgba(200,169,110,.2);
+    color:var(--acc-dim); transition:all .15s;
+    opacity:0; pointer-events:none;
+  }
+  .card:hover .btn-summarize { opacity:1; pointer-events:auto; }
+  .btn-summarize:hover { background:rgba(200,169,110,.16); color:var(--accent); border-color:var(--acc-dim); }
+  .btn-summarize:disabled { opacity:.35 !important; cursor:not-allowed; }
+  .btn-summarize.open { opacity:1 !important; pointer-events:auto; color:var(--accent); border-color:var(--acc-dim); background:rgba(200,169,110,.1); }
+
+  /* ── Panel de resumen inline ── */
+  .summary-panel {
+    margin-top:13px; padding:15px 17px;
+    background:rgba(200,169,110,.04);
+    border:1px solid rgba(200,169,110,.14);
+    border-left:2px solid var(--acc-dim);
+    border-radius:0 3px 3px 0;
+    display:none;
+  }
+  .summary-panel.visible { display:block; animation:fadeUp .2s ease both; }
+  .summary-label {
+    font-family:'IBM Plex Mono',monospace; font-size:.55rem; text-transform:uppercase;
+    letter-spacing:.18em; color:var(--acc-dim); margin-bottom:10px;
+    display:flex; align-items:center; gap:7px;
+  }
+  .ai-dot { width:5px; height:5px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+  .ai-dot.pulsing { animation:pulse 1.2s ease infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.2} }
+  .summary-text { font-size:.85rem; color:var(--text); line-height:1.8; }
+  .summary-error { font-size:.78rem; color:var(--red); font-family:'IBM Plex Mono',monospace; }
+
   .empty { text-align:center; padding:80px 20px; color:var(--text-dim); }
   .empty-icon { font-size:2rem; opacity:.25; margin-bottom:14px; }
   .empty p { font-family:'IBM Plex Mono',monospace; font-size:.72rem; line-height:2; }
@@ -115,7 +118,6 @@
 </header>
 
 <div class="wrap">
-  <!-- Fila 1: Fuentes -->
   <div class="controls">
     <span class="mono-label">Fuentes</span>
     <div class="chip on-bbc" id="chip-BBC" onclick="toggleSource('BBC')"><span class="dot"></span>BBC Mundo</div>
@@ -124,17 +126,16 @@
     <button class="btn-refresh" id="refresh-btn" onclick="load()">↻ Actualizar</button>
   </div>
 
-  <!-- Fila 2: Categorías -->
   <div class="cat-controls">
     <span class="mono-label">Categorías</span>
     <div class="cat-all active" id="cat-all" onclick="toggleAll()">Todas</div>
-    <div class="cat-chip" id="cat-guerra"    onclick="toggleCat('guerra')">   <span class="cat-icon">⚔</span>  Guerra & Conflicto</div>
+    <div class="cat-chip" id="cat-guerra"     onclick="toggleCat('guerra')">    <span class="cat-icon">⚔</span>  Guerra & Conflicto</div>
     <div class="cat-chip" id="cat-diplomacia" onclick="toggleCat('diplomacia')"><span class="cat-icon">🤝</span> Diplomacia</div>
-    <div class="cat-chip" id="cat-politica"  onclick="toggleCat('politica')">  <span class="cat-icon">🏛</span> Política</div>
-    <div class="cat-chip" id="cat-economia"  onclick="toggleCat('economia')">  <span class="cat-icon">📊</span> Economía</div>
-    <div class="cat-chip" id="cat-clima"     onclick="toggleCat('clima')">     <span class="cat-icon">🌍</span> Clima & Energía</div>
+    <div class="cat-chip" id="cat-politica"   onclick="toggleCat('politica')">  <span class="cat-icon">🏛</span> Política</div>
+    <div class="cat-chip" id="cat-economia"   onclick="toggleCat('economia')">  <span class="cat-icon">📊</span> Economía</div>
+    <div class="cat-chip" id="cat-clima"      onclick="toggleCat('clima')">     <span class="cat-icon">🌍</span> Clima & Energía</div>
     <div class="cat-chip" id="cat-tecnologia" onclick="toggleCat('tecnologia')"><span class="cat-icon">💡</span> Tecnología</div>
-    <div class="cat-chip" id="cat-sociedad"  onclick="toggleCat('sociedad')">  <span class="cat-icon">👥</span> Sociedad</div>
+    <div class="cat-chip" id="cat-sociedad"   onclick="toggleCat('sociedad')">  <span class="cat-icon">👥</span> Sociedad</div>
   </div>
 
   <div id="status" class="loading"><span class="spinner"></span>Cargando noticias...</div>
@@ -145,181 +146,56 @@
 <footer>Diplomatica · BBC Mundo · Al Jazeera · France 24 · vía RSS</footer>
 
 <script>
-// ── Config ──────────────────────────────────────────────────────
 const API_URL = "https://script.google.com/macros/s/AKfycbzA_FCEMdzW6hj2OjaRP7TLroAekGQbhMaPlvCRaCgu2amk9k-GNEdjrEL5dAlR6BiTtw/exec";
 const LABELS  = { BBC:"BBC Mundo", AJE:"Al Jazeera", F24:"France 24" };
 const COLORS  = { BBC:"#d47070",   AJE:"#e8a83a",    F24:"#5aa0d4"  };
 
-// ── Categorías: keywords en español e inglés ─────────────────────
 const CATEGORIES = {
-  guerra: {
-    label: "Guerra & Conflicto",
-    icon: "⚔",
-    keywords: [
-      "guerra","ataque","bombardeo","misil","cohete","bomba","explosión","muertos","víctimas",
-      "ofensiva","invasión","tropas","milicia","conflicto","combate","disparos","heridos",
-      "frente","trinchera","ceasefire","alto al fuego","tregua","ocupación","operación militar",
-      "drone","uav","armada","ejército","fuerzas armadas","muertes","fallecidos",
-      "war","attack","bombing","missile","rocket","troops","military","battle","combat","killed",
-      "offensive","invasion","airstrike","strike","casualties","soldiers","army","navy","airforce",
-      "hamas","hezbollah","isis","daesh","talibán","taliban","ukraine","ucrania","gaza","sudan",
-      "russia","rusia","israel","palestina","palestine","myanmar","yemen","siria","syria","irak","iraq"
-    ]
-  },
-  diplomacia: {
-    label: "Diplomacia",
-    icon: "🤝",
-    keywords: [
-      "acuerdo","tratado","cumbre","negociación","canciller","embajada","embajador",
-      "declaración conjunta","visita oficial","relaciones exteriores","alianza","pacto",
-      "onu","naciones unidas","otan","nato","g7","g20","ue","unión europea","asean",
-      "sanción","sanciones","expulsión","diplomático","diplomacia","mediación","mediador",
-      "delegación","protocolo","bilateral","multilateral","cooperación internacional",
-      "agreement","treaty","summit","negotiation","chancellor","ambassador","embassy",
-      "united nations","alliance","pact","sanction","diplomatic","mediation","delegation"
-    ]
-  },
-  politica: {
-    label: "Política",
-    icon: "🏛",
-    keywords: [
-      "elección","elecciones","presidente","gobierno","parlamento","partido","voto","votación",
-      "golpe","golpe de estado","congreso","senado","primer ministro","premier","canciller",
-      "democracia","dictadura","autoritarismo","referéndum","plebiscito","legislatura",
-      "oposición","coalición","campaña","candidato","mandatario","jefe de estado",
-      "ministro","gabinete","reforma","constitución","ley","proyecto de ley","decreto",
-      "election","president","government","parliament","party","vote","coup","congress",
-      "prime minister","democracy","dictatorship","referendum","legislation","minister",
-      "cabinet","reform","constitution","law","decree","political","politics","policy"
-    ]
-  },
-  economia: {
-    label: "Economía",
-    icon: "📊",
-    keywords: [
-      "economía","aranceles","arancel","mercado","inflación","pib","banco","petróleo",
-      "deuda","comercio","exportación","importación","fmi","banco mundial","reserva federal",
-      "fed","bolsa","acciones","inversión","déficit","superávit","recesión","crecimiento",
-      "empleo","desempleo","salario","precio","costo","subsidio","impuesto","fiscal",
-      "moneda","dólar","euro","yuan","crypto","criptomoneda","finanzas","presupuesto",
-      "economy","tariff","market","inflation","gdp","bank","oil","debt","trade","export",
-      "import","imf","world bank","stock","investment","recession","growth","employment",
-      "unemployment","wage","price","subsidy","tax","currency","dollar","finance","budget",
-      "gas","energía energética","opep","opec","brent","crude"
-    ]
-  },
-  clima: {
-    label: "Clima & Energía",
-    icon: "🌍",
-    keywords: [
-      "clima","cambio climático","co2","emisiones","calentamiento","inundación","sequía",
-      "huracán","tifón","ciclón","terremoto","tsunami","desastre natural","incendio forestal",
-      "energía renovable","solar","eólica","nuclear","hidrógeno","carbono","carbón",
-      "cop","acuerdo de paris","green deal","descarbonización","medioambiente","ambiental",
-      "biodiversidad","deforestación","contaminación","agua","océano","glaciar","ártico",
-      "climate","climate change","emissions","warming","flood","drought","hurricane",
-      "typhoon","cyclone","earthquake","tsunami","natural disaster","wildfire","renewable",
-      "solar","wind","nuclear","hydrogen","carbon","coal","environment","biodiversity",
-      "deforestation","pollution","ocean","glacier","arctic","cop28","cop30"
-    ]
-  },
-  tecnologia: {
-    label: "Tecnología",
-    icon: "💡",
-    keywords: [
-      "tecnología","inteligencia artificial","ia","ai","ciberseguridad","hackeo","hack",
-      "espacio","cohete espacial","satélite","nasa","spacex","chip","semiconductores",
-      "internet","redes sociales","datos","privacidad","vigilancia","5g","quantum",
-      "robot","automatización","deepfake","desinformación","regulación tecnológica",
-      "microsoft","google","apple","meta","amazon","openai","tiktok","huawei",
-      "technology","artificial intelligence","cybersecurity","hacking","space","rocket",
-      "satellite","chip","semiconductor","data","privacy","surveillance","quantum",
-      "robot","automation","deepfake","disinformation","regulation","social media"
-    ]
-  },
-  sociedad: {
-    label: "Sociedad",
-    icon: "👥",
-    keywords: [
-      "migrante","migrantes","refugiado","refugiados","asilo","migración","desplazados",
-      "derechos humanos","derechos","libertad","protestas","manifestación","huelga",
-      "salud","pandemia","vacuna","epidemia","hambre","pobreza","desigualdad","educación",
-      "mujer","género","feminismo","discriminación","racismo","minorías","religión",
-      "crimen","narcotráfico","corrupción","justicia","tribunal","pena","presos",
-      "humanitarian","migrant","refugee","asylum","migration","displaced",
-      "human rights","freedom","protest","strike","health","pandemic","vaccine",
-      "epidemic","hunger","poverty","inequality","education","gender","discrimination",
-      "racism","religion","crime","drug trafficking","corruption","justice","court"
-    ]
-  }
+  guerra:     { label:"Guerra & Conflicto", icon:"⚔",  keywords:["guerra","ataque","bombardeo","misil","cohete","bomba","explosión","muertos","víctimas","ofensiva","invasión","tropas","milicia","conflicto","combate","disparos","heridos","frente","tregua","alto al fuego","ocupación","operación militar","drone","ejército","fuerzas armadas","muertes","fallecidos","war","attack","bombing","missile","rocket","troops","military","battle","combat","killed","offensive","invasion","airstrike","strike","casualties","soldiers","army","navy","hamas","hezbollah","isis","daesh","talibán","taliban","ukraine","ucrania","gaza","sudan","russia","rusia","israel","palestina","myanmar","yemen","siria","syria","irak","iraq"] },
+  diplomacia: { label:"Diplomacia",         icon:"🤝", keywords:["acuerdo","tratado","cumbre","negociación","canciller","embajada","embajador","relaciones exteriores","alianza","pacto","onu","naciones unidas","otan","nato","g7","g20","unión europea","asean","sanción","sanciones","diplomático","diplomacia","mediación","delegación","bilateral","multilateral","cooperación internacional","agreement","treaty","summit","negotiation","ambassador","embassy","united nations","alliance","pact","sanction","diplomatic","mediation"] },
+  politica:   { label:"Política",           icon:"🏛", keywords:["elección","elecciones","presidente","gobierno","parlamento","partido","voto","votación","golpe de estado","congreso","senado","primer ministro","democracia","dictadura","referéndum","plebiscito","oposición","coalición","candidato","mandatario","ministro","gabinete","reforma","constitución","decreto","election","president","government","parliament","party","vote","coup","congress","prime minister","democracy","dictatorship","referendum","minister","cabinet","reform","constitution","law","political","politics","policy"] },
+  economia:   { label:"Economía",           icon:"📊", keywords:["economía","aranceles","arancel","mercado","inflación","pib","banco","petróleo","deuda","comercio","exportación","importación","fmi","banco mundial","reserva federal","bolsa","acciones","inversión","déficit","recesión","crecimiento","empleo","desempleo","salario","impuesto","moneda","dólar","euro","yuan","criptomoneda","finanzas","presupuesto","economy","tariff","market","inflation","gdp","debt","trade","export","import","imf","world bank","stock","investment","recession","growth","unemployment","wage","tax","currency","dollar","finance","budget","opec","brent","crude"] },
+  clima:      { label:"Clima & Energía",    icon:"🌍", keywords:["clima","cambio climático","co2","emisiones","calentamiento","inundación","sequía","huracán","tifón","ciclón","terremoto","tsunami","desastre natural","incendio forestal","energía renovable","solar","eólica","nuclear","hidrógeno","carbono","cop","acuerdo de paris","descarbonización","medioambiente","biodiversidad","deforestación","contaminación","océano","glaciar","climate","climate change","emissions","warming","flood","drought","hurricane","earthquake","natural disaster","wildfire","renewable","wind","nuclear","hydrogen","carbon","coal","environment","biodiversity","deforestation","pollution","ocean","glacier"] },
+  tecnologia: { label:"Tecnología",         icon:"💡", keywords:["tecnología","inteligencia artificial","ia","ai","ciberseguridad","hackeo","hack","espacio","satélite","nasa","spacex","chip","semiconductores","internet","redes sociales","datos","privacidad","vigilancia","5g","quantum","robot","automatización","deepfake","desinformación","microsoft","google","apple","meta","amazon","openai","tiktok","huawei","technology","artificial intelligence","cybersecurity","hacking","space","satellite","semiconductor","data","privacy","surveillance","automation","social media"] },
+  sociedad:   { label:"Sociedad",           icon:"👥", keywords:["migrante","migrantes","refugiado","refugiados","asilo","migración","desplazados","derechos humanos","libertad","protestas","manifestación","huelga","salud","pandemia","vacuna","epidemia","hambre","pobreza","desigualdad","educación","género","feminismo","discriminación","racismo","religión","crimen","narcotráfico","corrupción","justicia","tribunal","migrant","refugee","asylum","migration","displaced","human rights","freedom","protest","strike","health","pandemic","vaccine","epidemic","hunger","poverty","inequality","education","gender","discrimination","racism","religion","crime","corruption","justice","court"] }
 };
 
-// ── Estado ───────────────────────────────────────────────────────
 let activeSources = new Set(["BBC","AJE","F24"]);
-let activeCats    = new Set(); // vacío = todas
+let activeCats    = new Set();
 let allNews       = [];
+const summaryCache = {};
 
-// ── Categorización ───────────────────────────────────────────────
 function categorize(item) {
-  const text = ((item.title || "") + " " + (item.desc || "")).toLowerCase();
+  const text = ((item.title||"") + " " + (item.desc||"")).toLowerCase();
   const matched = [];
   for (const [key, cat] of Object.entries(CATEGORIES)) {
-    if (cat.keywords.some(kw => text.includes(kw))) {
-      matched.push(key);
-    }
+    if (cat.keywords.some(kw => text.includes(kw))) matched.push(key);
   }
   return matched.length > 0 ? matched : ["general"];
 }
+function tagAllNews() { allNews.forEach(item => { item.cats = categorize(item); }); }
 
-function tagAllNews() {
-  allNews.forEach(item => {
-    item.cats = categorize(item);
-  });
-}
-
-// ── Toggle fuentes ───────────────────────────────────────────────
 function toggleSource(src) {
   const chip = document.getElementById("chip-" + src);
-  if (activeSources.has(src)) {
-    activeSources.delete(src);
-    chip.className = "chip";
-  } else {
-    activeSources.add(src);
-    chip.className = "chip on-" + src.toLowerCase();
-  }
+  if (activeSources.has(src)) { activeSources.delete(src); chip.className = "chip"; }
+  else { activeSources.add(src); chip.className = "chip on-" + src.toLowerCase(); }
   render();
 }
 
-// ── Toggle categorías ────────────────────────────────────────────
 function toggleAll() {
   activeCats.clear();
-  // Apagar todos los chips de categoría
-  Object.keys(CATEGORIES).forEach(k => {
-    document.getElementById("cat-" + k).classList.remove("active");
-  });
+  Object.keys(CATEGORIES).forEach(k => document.getElementById("cat-"+k).classList.remove("active"));
   document.getElementById("cat-all").classList.add("active");
   render();
 }
-
 function toggleCat(key) {
-  if (activeCats.has(key)) {
-    activeCats.delete(key);
-    document.getElementById("cat-" + key).classList.remove("active");
-  } else {
-    activeCats.add(key);
-    document.getElementById("cat-" + key).classList.add("active");
-    document.getElementById("cat-all").classList.remove("active");
-  }
-  // Si quedan 0 activas, volver a "Todas"
-  if (activeCats.size === 0) {
-    document.getElementById("cat-all").classList.add("active");
-  }
+  if (activeCats.has(key)) { activeCats.delete(key); document.getElementById("cat-"+key).classList.remove("active"); }
+  else { activeCats.add(key); document.getElementById("cat-"+key).classList.add("active"); document.getElementById("cat-all").classList.remove("active"); }
+  if (activeCats.size === 0) document.getElementById("cat-all").classList.add("active");
   render();
 }
 
-// ── Carga de datos ───────────────────────────────────────────────
 window.onload = load;
-
 async function load() {
   const btn = document.getElementById("refresh-btn");
   btn.disabled = true;
@@ -336,7 +212,7 @@ async function load() {
     allNews = data.items || [];
     tagAllNews();
     const d = new Date(data.updated);
-    document.getElementById("ts").textContent = "Actualizado: " + d.toLocaleTimeString("es-CL", { hour:"2-digit", minute:"2-digit" });
+    document.getElementById("ts").textContent = "Actualizado: " + d.toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});
     setStatus(`✓ ${allNews.length} noticias cargadas.`, "done");
     render();
   } catch (e) {
@@ -346,18 +222,12 @@ async function load() {
   btn.disabled = false;
 }
 
-// ── Render ───────────────────────────────────────────────────────
 function render() {
   const list  = document.getElementById("list");
   const stats = document.getElementById("stats");
 
-  // Filtrar por fuente
   let items = allNews.filter(i => activeSources.has(i.source));
-
-  // Filtrar por categoría (si hay alguna activa)
-  if (activeCats.size > 0) {
-    items = items.filter(i => i.cats && i.cats.some(c => activeCats.has(c)));
-  }
+  if (activeCats.size > 0) items = items.filter(i => i.cats && i.cats.some(c => activeCats.has(c)));
 
   if (!items.length) {
     list.innerHTML = `<div class="empty"><div class="empty-icon">∅</div><p>No hay noticias.<br>Activa al menos una fuente o categoría.</p></div>`;
@@ -365,61 +235,129 @@ function render() {
     return;
   }
 
-  // Stats
   const counts = {};
   items.forEach(i => counts[i.source] = (counts[i.source]||0)+1);
   stats.innerHTML = `<b>${items.length}</b> noticias · ` + Object.entries(counts).map(([s,n]) => `${LABELS[s]}: <b style="color:${COLORS[s]}">${n}</b>`).join(" · ");
   stats.style.display = "flex";
 
-  // Cards
   list.innerHTML = "";
-  items.forEach((item, i) => {
-    const card = document.createElement("div");
+  items.forEach((item, idx) => {
+    const card   = document.createElement("div");
     card.className = "card";
-    card.style.animation = `fadeUp 0.25s ease ${Math.min(i*0.025,0.5)}s both`;
+    card.style.animation = `fadeUp 0.25s ease ${Math.min(idx*0.025,0.5)}s both`;
+    const cardId = "card-" + idx;
 
-    // Tags de categoría visibles en la card (excluir "general")
-    const visibleCats = (item.cats || []).filter(c => c !== "general");
+    const visibleCats = (item.cats||[]).filter(c => c !== "general");
     const catTagsHTML = visibleCats.map(c => {
       const cat = CATEGORIES[c];
       return cat ? `<span class="cat-tag">${cat.icon} ${cat.label}</span>` : "";
     }).join("");
 
+    // Guardamos title/desc como data-attributes para evitar problemas de escapado en onclick
     card.innerHTML = `
       <div class="card-meta">
         <span class="badge badge-${item.source}">${LABELS[item.source]}</span>
         ${catTagsHTML}
         <span class="card-date">${formatDate(item.pubDate)}</span>
       </div>
-      <div class="card-title"><a href="${esc(item.link)}" target="_blank" rel="noopener">${esc(item.title)}</a></div>
+      <div class="card-title">
+        <a href="${esc(item.link)}" target="_blank" rel="noopener">${esc(item.title)}</a>
+      </div>
       ${item.desc ? `<div class="card-desc">${esc(item.desc)}</div>` : ""}
+      <div class="card-footer">
+        <button class="btn-summarize" id="btn-${cardId}">✦ Resumir con IA</button>
+      </div>
+      <div class="summary-panel" id="panel-${cardId}">
+        <div class="summary-label"><span class="ai-dot" id="dot-${cardId}"></span>Análisis · Claude</div>
+        <div class="summary-text" id="text-${cardId}"></div>
+      </div>
     `;
+
+    // Adjuntamos datos limpios al botón para evitar problemas con caracteres especiales
+    const btn = card.querySelector(".btn-summarize");
+    btn._title = item.title || "";
+    btn._desc  = item.desc  || "";
+    btn._id    = cardId;
+    btn.addEventListener("click", function() {
+      toggleSummary(this._id, this._title, this._desc);
+    });
+
     list.appendChild(card);
   });
 }
 
-// ── Utilidades ───────────────────────────────────────────────────
-function setStatus(html, cls) {
-  const s = document.getElementById("status");
-  s.innerHTML = html;
-  s.className = cls;
+async function toggleSummary(cardId, title, desc) {
+  const panel = document.getElementById("panel-" + cardId);
+  const btn   = document.getElementById("btn-"   + cardId);
+  const dot   = document.getElementById("dot-"   + cardId);
+  const text  = document.getElementById("text-"  + cardId);
+
+  // Colapsar si ya está abierto
+  if (panel.classList.contains("visible")) {
+    panel.classList.remove("visible");
+    btn.textContent = "✦ Resumir con IA";
+    btn.classList.remove("open");
+    return;
+  }
+
+  // Mostrar desde caché
+  if (summaryCache[cardId]) {
+    text.innerHTML = summaryCache[cardId];
+    panel.classList.add("visible");
+    btn.textContent = "✦ Cerrar resumen";
+    btn.classList.add("open");
+    return;
+  }
+
+  // Llamar al script
+  btn.disabled = true;
+  btn.textContent = "Generando...";
+  dot.classList.add("pulsing");
+  text.innerHTML = "";
+  panel.classList.add("visible");
+
+  try {
+    const url = API_URL + "?action=summarize"
+      + "&title=" + encodeURIComponent(title)
+      + "&desc="  + encodeURIComponent(desc);
+
+    const controller = new AbortController();
+    const timeoutId  = setTimeout(() => controller.abort(), 35000);
+    const res  = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeoutId);
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || "Error al resumir");
+
+    const html = data.summary.replace(/\n/g, "<br>");
+    text.innerHTML = html;
+    summaryCache[cardId] = html;
+    btn.textContent = "✦ Cerrar resumen";
+    btn.classList.add("open");
+  } catch (e) {
+    text.innerHTML = `<span class="summary-error">⚠ ${e.message}</span>`;
+    btn.textContent = "✦ Resumir con IA";
+    btn.classList.remove("open");
+  }
+
+  dot.classList.remove("pulsing");
+  btn.disabled = false;
 }
+
+function setStatus(html, cls) { const s = document.getElementById("status"); s.innerHTML = html; s.className = cls; }
 
 function formatDate(str) {
   if (!str) return "";
   const d    = new Date(str);
-  const diff = Math.floor((Date.now() - d) / 60000);
+  const diff = Math.floor((Date.now()-d)/60000);
   if (isNaN(diff)) return str;
   if (diff < 1)    return "ahora";
   if (diff < 60)   return `hace ${diff} min`;
   if (diff < 1440) return `hace ${Math.floor(diff/60)} h`;
-  return d.toLocaleDateString("es-CL", { day:"numeric", month:"short" });
+  return d.toLocaleDateString("es-CL",{day:"numeric",month:"short"});
 }
 
 function esc(s) {
-  return String(s||"")
-    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
 </script>
 </body>
