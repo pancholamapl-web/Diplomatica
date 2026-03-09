@@ -486,24 +486,33 @@ function escapeHtml(s) {
 }
 
 // ── Feed ──────────────────────────────────────────────────────────
+
+// Noticias que NO son de interés internacional
+const EXCLUDE_KEYWORDS = [
+  "rihanna","beyoncé","taylor swift","kardashian","celebrity","celebridad",
+  "farándula","entretenimiento","bali","turismo","hotel","resort","playa",
+  "receta","cocina","moda","fashion","oscar","grammy","emmy","MTV",
+  "nba","nfl","fifa","champions league","premier league","fórmula 1","tenis",
+  "baloncesto","fútbol americano","béisbol","golf","ciclismo","tour de france",
+  "dispararon a","arrestaron a","matan a","asesinan a","muere cantante",
+  "actor","actriz","director de cine","serie de tv","película","netflix","spotify",
+  "reality","talent show","miss universo","miss mundo","boda real","divorcio",
+  "horóscopo","recetas","viaje","destino turístico","paraíso"
+];
+
+function isRelevant(item) {
+  const text = ((item.title || "") + " " + (item.desc || "")).toLowerCase();
+  return !EXCLUDE_KEYWORDS.some(kw => text.includes(kw));
+}
+
 function categorize(item) {
-  const title = (item.title || "").toLowerCase();
-  const desc  = (item.desc  || "").toLowerCase();
-
-  // Coincidencia por palabra completa usando split en espacios y puntuación
-  function matchesWord(text, kw) {
-    if (kw.includes(" ")) return text.includes(kw);
-    const words = text.split(/[\s,.:;()\-\/!?]+/);
-    return words.includes(kw);
-  }
-
+  const text = ((item.title || "") + " " + (item.desc || "")).toLowerCase();
   const scores = {};
 
   for (const [key, cat] of Object.entries(CATEGORIES)) {
     let score = 0;
     for (const kw of cat.keywords) {
-      if (matchesWord(title, kw)) score += 3;
-      if (matchesWord(desc,  kw)) score += 1;
+      if (text.includes(kw)) score += 1;
     }
     if (score > 0) scores[key] = score;
   }
@@ -580,7 +589,7 @@ function render() {
   const list  = document.getElementById("list");
   const stats = document.getElementById("stats");
 
-  let items = allNews.filter(i => activeSources.has(i.source));
+  let items = allNews.filter(i => activeSources.has(i.source) && isRelevant(i));
   if (activeCats.size > 0) items = items.filter(i => i.cats && i.cats.some(c => activeCats.has(c)));
 
   if (!items.length) {
