@@ -487,12 +487,36 @@ function escapeHtml(s) {
 
 // ── Feed ──────────────────────────────────────────────────────────
 function categorize(item) {
-  const text = ((item.title||"") + " " + (item.desc||"")).toLowerCase();
-  const matched = [];
+  const title = (item.title || "").toLowerCase();
+  const desc  = (item.desc  || "").toLowerCase();
+
+  const scores = {};
+
   for (const [key, cat] of Object.entries(CATEGORIES)) {
-    if (cat.keywords.some(kw => text.includes(kw))) matched.push(key);
+    let score = 0;
+    for (const kw of cat.keywords) {
+      if (title.includes(kw)) score += 3;  // título vale 3x más
+      if (desc.includes(kw))  score += 1;
+    }
+    if (score > 0) scores[key] = score;
   }
-  return matched.length > 0 ? matched : ["general"];
+
+  if (Object.keys(scores).length === 0) return ["general"];
+
+  // Ordenar por score, máximo 2 etiquetas
+  const sorted = Object.entries(scores)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 2)
+    .map(([key]) => key);
+
+  // Descartar segunda etiqueta si tiene menos del 40% del score de la primera
+  if (sorted.length === 2) {
+    const top    = scores[sorted[0]];
+    const second = scores[sorted[1]];
+    if (second < top * 0.4) return [sorted[0]];
+  }
+
+  return sorted;
 }
 function tagAllNews() { allNews.forEach(item => { item.cats = categorize(item); }); }
 
