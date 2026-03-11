@@ -10,6 +10,9 @@
     --bg:#0e0f11; --surface:#16181c; --border:#2a2d33;
     --accent:#c8a96e; --acc-dim:#8a7248; --text:#d4d6da;
     --text-dim:#6b6f78; --bright:#f0f1f3; --red:#c45c5c; --green:#5c9e6e;
+    /* Nacional palette — azul pizarra frío para distinguir de internacional */
+    --nat-accent:#7ea8c9; --nat-dim:#4a6e8a; --nat-surface:rgba(126,168,201,.04);
+    --nat-border:rgba(126,168,201,.22);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; font-weight:300; min-height:100vh; line-height:1.6; }
@@ -24,183 +27,226 @@
   .wrap { max-width:960px; margin:0 auto; padding:0 20px 60px; }
 
   /* ══════════════════════════════════════════════
+     SECTION HEADERS — usados por briefing, nacional e internacional
+  ══════════════════════════════════════════════ */
+  .section-title-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 32px 0 0;
+    margin-bottom: 0;
+  }
+  .section-title-row:first-of-type { padding-top: 28px; }
+  .section-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .55rem;
+    text-transform: uppercase;
+    letter-spacing: .24em;
+    color: var(--text-dim);
+  }
+  .section-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--bright);
+    letter-spacing: .01em;
+  }
+  .section-heading.nat { color: var(--nat-accent); }
+  .section-heading.intl { color: var(--accent); }
+  .section-rule {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border), transparent);
+  }
+
+  /* ══════════════════════════════════════════════
      BRIEFING SECTION
   ══════════════════════════════════════════════ */
   #briefing-section {
-    margin: 28px 0 0;
+    margin: 16px 0 0;
     border: 1px solid rgba(200,169,110,.22);
     border-radius: 5px;
     overflow: hidden;
     background: linear-gradient(135deg, rgba(200,169,110,.04) 0%, rgba(22,24,28,.0) 100%);
   }
-
   .briefing-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px;
-    border-bottom: 1px solid rgba(200,169,110,.14);
-    background: rgba(200,169,110,.05);
-    flex-wrap: wrap;
-    gap: 8px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px; border-bottom: 1px solid rgba(200,169,110,.14);
+    background: rgba(200,169,110,.05); flex-wrap: wrap; gap: 8px;
   }
-
-  .briefing-header-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
+  .briefing-header-left { display: flex; align-items: center; gap: 12px; }
   .briefing-kicker {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .55rem;
-    text-transform: uppercase;
-    letter-spacing: .22em;
-    color: var(--acc-dim);
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace; font-size: .55rem;
+    text-transform: uppercase; letter-spacing: .22em; color: var(--acc-dim);
+    display: flex; align-items: center; gap: 6px;
   }
-
-  .briefing-kicker-line {
-    width: 20px;
-    height: 1px;
-    background: var(--acc-dim);
-  }
-
-  .briefing-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.0rem;
-    color: var(--accent);
-    font-weight: 400;
-  }
-
-  .briefing-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  #briefing-date {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .58rem;
-    color: var(--text-dim);
-  }
-
+  .briefing-kicker-line { width: 20px; height: 1px; background: var(--acc-dim); }
+  .briefing-title { font-family: 'Playfair Display', serif; font-size: 1.0rem; color: var(--accent); font-weight: 400; }
+  .briefing-meta { display: flex; align-items: center; gap: 10px; }
+  #briefing-date { font-family: 'IBM Plex Mono', monospace; font-size: .58rem; color: var(--text-dim); }
   .btn-briefing-refresh {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .55rem;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    padding: 3px 10px;
-    border-radius: 2px;
-    cursor: pointer;
-    background: rgba(200,169,110,.08);
-    border: 1px solid rgba(200,169,110,.2);
-    color: var(--acc-dim);
-    transition: all .15s;
+    font-family: 'IBM Plex Mono', monospace; font-size: .55rem; text-transform: uppercase;
+    letter-spacing: .1em; padding: 3px 10px; border-radius: 2px; cursor: pointer;
+    background: rgba(200,169,110,.08); border: 1px solid rgba(200,169,110,.2);
+    color: var(--acc-dim); transition: all .15s;
   }
   .btn-briefing-refresh:hover { background: rgba(200,169,110,.16); color: var(--accent); }
   .btn-briefing-refresh:disabled { opacity: .35; cursor: not-allowed; }
-
-  /* Estado de carga del briefing */
   #briefing-status {
-    padding: 28px 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .65rem;
-    color: var(--acc-dim);
+    padding: 28px 20px; display: flex; align-items: center; gap: 10px;
+    font-family: 'IBM Plex Mono', monospace; font-size: .65rem; color: var(--acc-dim);
   }
-
-  /* Cuerpo del briefing */
-  #briefing-body {
-    padding: 20px 24px 24px;
-    display: none;
-  }
-
-  /* Cada entrada del briefing */
+  #briefing-body { padding: 20px 24px 24px; display: none; }
   .briefing-item {
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(200,169,110,.08);
-    display: grid;
-    grid-template-columns: 3px 1fr;
-    gap: 0 16px;
+    padding: 14px 0; border-bottom: 1px solid rgba(200,169,110,.08);
+    display: grid; grid-template-columns: 3px 1fr; gap: 0 16px;
     animation: fadeUp .3s ease both;
   }
   .briefing-item:last-child { border-bottom: none; padding-bottom: 0; }
   .briefing-item:first-child { padding-top: 0; }
-
   .briefing-stripe {
-    width: 3px;
-    background: linear-gradient(to bottom, var(--accent), var(--acc-dim));
-    border-radius: 2px;
-    align-self: stretch;
-    min-height: 20px;
+    width: 3px; background: linear-gradient(to bottom, var(--accent), var(--acc-dim));
+    border-radius: 2px; align-self: stretch; min-height: 20px;
   }
-
-  .briefing-item-content {}
-
   .briefing-topic {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .62rem;
-    text-transform: uppercase;
-    letter-spacing: .15em;
-    color: var(--accent);
-    margin-bottom: 6px;
-    font-weight: 500;
+    font-family: 'IBM Plex Mono', monospace; font-size: .62rem; text-transform: uppercase;
+    letter-spacing: .15em; color: var(--accent); margin-bottom: 6px; font-weight: 500;
   }
-
-  .briefing-text {
-    font-size: .875rem;
-    color: var(--text);
-    line-height: 1.78;
-    font-weight: 300;
-  }
-
-  /* Error del briefing */
-  .briefing-error {
-    padding: 20px 24px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .65rem;
-    color: var(--red);
-    display: none;
-  }
-
-  /* Toggle para colapsar/expandir */
+  .briefing-text { font-size: .875rem; color: var(--text); line-height: 1.78; font-weight: 300; }
+  .briefing-error { padding: 20px 24px; font-family: 'IBM Plex Mono', monospace; font-size: .65rem; color: var(--red); display: none; }
   .btn-briefing-toggle {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .55rem;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    padding: 3px 10px;
-    border-radius: 2px;
-    cursor: pointer;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    transition: all .15s;
+    font-family: 'IBM Plex Mono', monospace; font-size: .55rem; text-transform: uppercase;
+    letter-spacing: .1em; padding: 3px 10px; border-radius: 2px; cursor: pointer;
+    background: transparent; border: 1px solid var(--border); color: var(--text-dim); transition: all .15s;
   }
   .btn-briefing-toggle:hover { border-color: var(--acc-dim); color: var(--acc-dim); }
 
   /* ══════════════════════════════════════════════
-     CONTROLS & FEED (sin cambios)
+     NACIONAL — controles y sección
   ══════════════════════════════════════════════ */
-  .controls { padding:16px 0 12px; border-bottom:1px solid var(--border); margin-bottom:0; margin-top:20px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .nat-section {
+    margin-top: 16px;
+    border: 1px solid var(--nat-border);
+    border-radius: 5px;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--nat-surface) 0%, rgba(22,24,28,0) 100%);
+  }
+  .nat-section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px; border-bottom: 1px solid rgba(126,168,201,.14);
+    background: rgba(126,168,201,.05); flex-wrap: wrap; gap: 8px;
+  }
+  .nat-section-header-left { display: flex; align-items: center; gap: 12px; }
+  .nat-kicker {
+    font-family: 'IBM Plex Mono', monospace; font-size: .55rem; text-transform: uppercase;
+    letter-spacing: .22em; color: var(--nat-dim); display: flex; align-items: center; gap: 6px;
+  }
+  .nat-kicker-line { width: 20px; height: 1px; background: var(--nat-dim); }
+  .nat-section-title { font-family: 'Playfair Display', serif; font-size: 1.0rem; color: var(--nat-accent); font-weight: 400; }
+  .nat-section-body { padding: 16px 20px 20px; }
+
+  /* Controles nacional */
+  .nat-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid rgba(126,168,201,.12); }
   .mono-label { font-family:'IBM Plex Mono',monospace; font-size:.6rem; text-transform:uppercase; letter-spacing:.2em; color:var(--text-dim); white-space:nowrap; }
 
+  /* Chips fuentes nacionales */
+  .nat-chip {
+    display: flex; align-items: center; gap: 6px; background: #16181c;
+    border: 1px solid var(--border); border-radius: 3px; padding: 5px 13px;
+    font-family: 'IBM Plex Mono', monospace; font-size: .65rem; color: var(--text-dim);
+    cursor: pointer; transition: all .15s; user-select: none;
+  }
+  .nat-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+  .nat-chip.on-emol  { border-color: rgba(126,168,201,.5); color: #7ea8c9; background: rgba(126,168,201,.08); }
+  .nat-chip.on-coop  { border-color: rgba(100,180,130,.5); color: #64b482; background: rgba(100,180,130,.08); }
+  .nat-chip.on-elmos { border-color: rgba(180,120,200,.5); color: #b478c8; background: rgba(180,120,200,.08); }
+
+  .btn-refresh-nat {
+    background: rgba(126,168,201,.1); border: 1px solid var(--nat-dim); border-radius: 3px;
+    padding: 6px 20px; font-family: 'IBM Plex Mono', monospace; font-size: .72rem;
+    color: var(--nat-accent); cursor: pointer; transition: all .15s; margin-left: auto;
+  }
+  .btn-refresh-nat:hover { background: rgba(126,168,201,.18); }
+  .btn-refresh-nat:disabled { opacity: .4; cursor: not-allowed; }
+
+  /* Categorías nacional */
+  .nat-cat-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+  .nat-cat-chip {
+    display: flex; align-items: center; gap: 5px; background: #16181c;
+    border: 1px solid var(--border); border-radius: 3px; padding: 4px 11px;
+    font-family: 'IBM Plex Mono', monospace; font-size: .62rem; color: var(--text-dim);
+    cursor: pointer; transition: all .15s; user-select: none;
+  }
+  .nat-cat-chip .cat-icon { font-size: .75rem; line-height: 1; }
+  .nat-cat-chip.active { border-color: rgba(126,168,201,.5); color: var(--nat-accent); background: rgba(126,168,201,.08); }
+  .nat-cat-chip:hover:not(.active) { border-color: #3a3d45; color: #9a9ea8; }
+  .nat-cat-all {
+    display: flex; align-items: center; background: #16181c;
+    border: 1px solid var(--border); border-radius: 3px; padding: 4px 11px;
+    font-family: 'IBM Plex Mono', monospace; font-size: .62rem; color: var(--text-dim);
+    cursor: pointer; transition: all .15s; user-select: none;
+  }
+  .nat-cat-all.active { border-color: rgba(126,168,201,.5); color: var(--nat-accent); background: rgba(126,168,201,.08); }
+
+  /* Status nacional */
+  #nat-status { font-family:'IBM Plex Mono',monospace; font-size:.65rem; min-height:18px; margin-bottom:12px; display:flex; align-items:center; gap:7px; }
+  #nat-status.idle { color:var(--text-dim); } #nat-status.loading { color:var(--nat-accent); } #nat-status.done { color:var(--green); } #nat-status.error { color:var(--red); }
+  #nat-stats { font-family:'IBM Plex Mono',monospace; font-size:.63rem; color:var(--text-dim); margin-bottom:14px; display:none; gap:16px; flex-wrap:wrap; }
+  #nat-stats b { color:var(--text); font-weight:400; }
+
+  /* Badges nacionales */
+  .badge-EMOL  { background:rgba(126,168,201,.12); color:#7ea8c9; border:1px solid rgba(126,168,201,.3); }
+  .badge-COOP  { background:rgba(100,180,130,.12); color:#64b482; border:1px solid rgba(100,180,130,.3); }
+  .badge-ELMOS { background:rgba(180,120,200,.12); color:#b478c8; border:1px solid rgba(180,120,200,.3); }
+
+  /* Cat-tag nacional */
+  .cat-tag-nat {
+    font-family: 'IBM Plex Mono', monospace; font-size: .56rem; text-transform: uppercase;
+    letter-spacing: .1em; padding: 2px 6px; border-radius: 2px;
+    background: rgba(126,168,201,.07); color: var(--nat-dim);
+    border: 1px solid rgba(126,168,201,.18);
+  }
+
+  /* Stripe nacional en briefing items */
+  .briefing-stripe-nat {
+    width: 3px; background: linear-gradient(to bottom, var(--nat-accent), var(--nat-dim));
+    border-radius: 2px; align-self: stretch; min-height: 20px;
+  }
+
+  /* ══════════════════════════════════════════════
+     INTERNACIONAL — sección contenedora (espejo de nacional)
+  ══════════════════════════════════════════════ */
+  .intl-section {
+    border: 1px solid rgba(200,169,110,.22);
+    border-radius: 5px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(200,169,110,.04) 0%, rgba(22,24,28,0) 100%);
+  }
+  .intl-section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px; border-bottom: 1px solid rgba(200,169,110,.14);
+    background: rgba(200,169,110,.05); flex-wrap: wrap; gap: 8px;
+  }
+  .intl-section-header-left { display: flex; align-items: center; gap: 12px; }
+  .intl-kicker {
+    font-family: 'IBM Plex Mono', monospace; font-size: .55rem; text-transform: uppercase;
+    letter-spacing: .22em; color: var(--acc-dim); display: flex; align-items: center; gap: 6px;
+  }
+  .intl-kicker-line { width: 20px; height: 1px; background: var(--acc-dim); }
+  .intl-section-title { font-family: 'Playfair Display', serif; font-size: 1.0rem; color: var(--accent); font-weight: 400; }
+  .intl-section-body { padding: 16px 20px 20px; }
+  .intl-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid rgba(200,169,110,.12); }
+  .intl-cat-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+
+  /* ── Chips compartidos ── */
   .chip { display:flex; align-items:center; gap:6px; background:#16181c; border:1px solid var(--border); border-radius:3px; padding:5px 13px; font-family:'IBM Plex Mono',monospace; font-size:.65rem; color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none; }
   .chip .dot { width:6px; height:6px; border-radius:50%; background:currentColor; flex-shrink:0; }
   .chip.on-bbc { border-color:rgba(200,60,60,.5); color:#d47070; background:rgba(200,60,60,.08); }
   .chip.on-aje { border-color:rgba(255,168,0,.5); color:#e8a83a; background:rgba(255,168,0,.08); }
   .chip.on-f24 { border-color:rgba(0,120,200,.5); color:#5aa0d4; background:rgba(0,120,200,.08); }
-
   .btn-refresh { background:rgba(200,169,110,.1); border:1px solid var(--acc-dim); border-radius:3px; padding:6px 20px; font-family:'IBM Plex Mono',monospace; font-size:.72rem; color:var(--accent); cursor:pointer; transition:all .15s; margin-left:auto; }
   .btn-refresh:hover { background:rgba(200,169,110,.18); }
   .btn-refresh:disabled { opacity:.4; cursor:not-allowed; }
-
-  .cat-controls { padding:10px 0 14px; border-bottom:1px solid var(--border); margin-bottom:20px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   .cat-chip { display:flex; align-items:center; gap:5px; background:#16181c; border:1px solid var(--border); border-radius:3px; padding:4px 11px; font-family:'IBM Plex Mono',monospace; font-size:.62rem; color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none; }
   .cat-chip .cat-icon { font-size:.75rem; line-height:1; }
   .cat-chip.active { border-color:rgba(200,169,110,.5); color:var(--accent); background:rgba(200,169,110,.08); }
@@ -208,18 +254,23 @@
   .cat-all { display:flex; align-items:center; background:#16181c; border:1px solid var(--border); border-radius:3px; padding:4px 11px; font-family:'IBM Plex Mono',monospace; font-size:.62rem; color:var(--text-dim); cursor:pointer; transition:all .15s; user-select:none; }
   .cat-all.active { border-color:rgba(200,169,110,.5); color:var(--accent); background:rgba(200,169,110,.08); }
 
+  /* ══════════════════════════════════════════════
+     SHARED: status, cards, summaries
+  ══════════════════════════════════════════════ */
   #status { font-family:'IBM Plex Mono',monospace; font-size:.65rem; min-height:18px; margin-bottom:12px; display:flex; align-items:center; gap:7px; }
   #status.idle { color:var(--text-dim); } #status.loading { color:var(--accent); } #status.done { color:var(--green); } #status.error { color:var(--red); }
   @keyframes spin { to { transform:rotate(360deg); } }
   .spinner { width:10px; height:10px; border-radius:50%; flex-shrink:0; border:1.5px solid var(--acc-dim); border-top-color:var(--accent); animation:spin .7s linear infinite; }
+  .spinner-nat { width:10px; height:10px; border-radius:50%; flex-shrink:0; border:1.5px solid var(--nat-dim); border-top-color:var(--nat-accent); animation:spin .7s linear infinite; }
   #stats { font-family:'IBM Plex Mono',monospace; font-size:.63rem; color:var(--text-dim); margin-bottom:14px; display:none; gap:16px; flex-wrap:wrap; }
   #stats b { color:var(--text); font-weight:400; }
 
-  #list { display:flex; flex-direction:column; gap:2px; }
+  #list, #nat-list { display:flex; flex-direction:column; gap:2px; }
   @keyframes fadeUp { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
 
   .card { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:15px 18px; transition:border-color .15s; }
   .card:hover { border-color:var(--acc-dim); }
+  .card.nat-card:hover { border-color:var(--nat-dim); }
   .card-meta { display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
   .badge { font-family:'IBM Plex Mono',monospace; font-size:.58rem; text-transform:uppercase; letter-spacing:.15em; padding:2px 7px; border-radius:2px; font-weight:700; }
   .badge-BBC { background:rgba(200,60,60,.12); color:#d47070; border:1px solid rgba(200,60,60,.3); }
@@ -229,27 +280,32 @@
   .card-date { font-family:'IBM Plex Mono',monospace; font-size:.6rem; color:var(--text-dim); margin-left:auto; }
   .card-title { font-family:'Playfair Display',serif; font-size:1.02rem; color:var(--bright); line-height:1.4; margin-bottom:7px; }
   .card-desc { font-size:.83rem; color:var(--text-dim); line-height:1.65; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
-
   .card-footer { margin-top:11px; min-height:24px; }
+
   .btn-summarize {
     font-family:'IBM Plex Mono',monospace; font-size:.58rem; text-transform:uppercase;
     letter-spacing:.12em; padding:4px 12px; border-radius:2px; cursor:pointer;
     background:rgba(200,169,110,.07); border:1px solid rgba(200,169,110,.2);
-    color:var(--acc-dim); transition:all .15s;
-    opacity:0; pointer-events:none;
+    color:var(--acc-dim); transition:all .15s; opacity:0; pointer-events:none;
+  }
+  .btn-summarize.nat-sum {
+    background:rgba(126,168,201,.07); border-color:rgba(126,168,201,.2); color:var(--nat-dim);
   }
   .card:hover .btn-summarize { opacity:1; pointer-events:auto; }
   .btn-summarize:hover { background:rgba(200,169,110,.16); color:var(--accent); border-color:var(--acc-dim); }
+  .btn-summarize.nat-sum:hover { background:rgba(126,168,201,.16); color:var(--nat-accent); border-color:var(--nat-dim); }
   .btn-summarize:disabled { opacity:.35 !important; cursor:not-allowed; }
   .btn-summarize.open { opacity:1 !important; pointer-events:auto; color:var(--accent); border-color:var(--acc-dim); background:rgba(200,169,110,.1); }
+  .btn-summarize.nat-sum.open { color:var(--nat-accent); border-color:var(--nat-dim); background:rgba(126,168,201,.1); }
 
   .summary-panel {
     margin-top:13px; padding:15px 17px;
-    background:rgba(200,169,110,.04);
-    border:1px solid rgba(200,169,110,.14);
-    border-left:2px solid var(--acc-dim);
-    border-radius:0 3px 3px 0;
-    display:none;
+    background:rgba(200,169,110,.04); border:1px solid rgba(200,169,110,.14);
+    border-left:2px solid var(--acc-dim); border-radius:0 3px 3px 0; display:none;
+  }
+  .summary-panel.nat-panel {
+    background:rgba(126,168,201,.04); border-color:rgba(126,168,201,.14);
+    border-left-color:var(--nat-dim);
   }
   .summary-panel.visible { display:block; animation:fadeUp .2s ease both; }
   .summary-label {
@@ -257,60 +313,36 @@
     letter-spacing:.18em; color:var(--acc-dim); margin-bottom:10px;
     display:flex; align-items:center; gap:7px;
   }
+  .summary-label.nat-label { color:var(--nat-dim); }
   .ai-dot { width:5px; height:5px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+  .ai-dot.nat { background:var(--nat-accent); }
   .ai-dot.pulsing { animation:pulse 1.2s ease infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.2} }
   .summary-text { font-size:.85rem; color:var(--text); line-height:1.8; }
   .summary-error { font-size:.78rem; color:var(--red); font-family:'IBM Plex Mono',monospace; }
 
-  /* ── Separadores de fecha ── */
+  /* Separadores de fecha */
   .date-group { margin-bottom: 4px; }
-  .date-separator {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 20px 0 10px;
-  }
+  .date-separator { display:flex; align-items:center; gap:12px; padding:20px 0 10px; }
   .date-separator:first-child { padding-top: 0; }
-  .date-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .6rem;
-    text-transform: uppercase;
-    letter-spacing: .2em;
-    color: var(--acc-dim);
-    white-space: nowrap;
-  }
-  .date-line {
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(to right, rgba(200,169,110,.2), transparent);
-  }
-  .date-count {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .55rem;
-    color: var(--text-dim);
-    white-space: nowrap;
-  }
+  .date-label { font-family:'IBM Plex Mono',monospace; font-size:.6rem; text-transform:uppercase; letter-spacing:.2em; color:var(--acc-dim); white-space:nowrap; }
+  .date-label.nat { color:var(--nat-dim); }
+  .date-line { flex:1; height:1px; background:linear-gradient(to right, rgba(200,169,110,.2), transparent); }
+  .date-line.nat { background:linear-gradient(to right, rgba(126,168,201,.2), transparent); }
+  .date-count { font-family:'IBM Plex Mono',monospace; font-size:.55rem; color:var(--text-dim); white-space:nowrap; }
 
-  /* ── Botón ver más ── */
+  /* Botón ver más */
   .btn-load-more {
-    display: block;
-    margin: 28px auto 0;
-    padding: 8px 28px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: .65rem;
-    text-transform: uppercase;
-    letter-spacing: .15em;
-    color: var(--acc-dim);
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all .15s;
+    display:block; margin:28px auto 0; padding:8px 28px;
+    font-family:'IBM Plex Mono',monospace; font-size:.65rem; text-transform:uppercase;
+    letter-spacing:.15em; color:var(--acc-dim); background:transparent;
+    border:1px solid var(--border); border-radius:3px; cursor:pointer; transition:all .15s;
   }
-  .btn-load-more:hover { border-color: var(--acc-dim); color: var(--accent); }
+  .btn-load-more:hover { border-color:var(--acc-dim); color:var(--accent); }
+  .btn-load-more.nat { color:var(--nat-dim); }
+  .btn-load-more.nat:hover { border-color:var(--nat-dim); color:var(--nat-accent); }
 
-  .empty { text-align:center; padding:80px 20px; color:var(--text-dim); }
+  .empty { text-align:center; padding:60px 20px; color:var(--text-dim); }
   .empty-icon { font-size:2rem; opacity:.25; margin-bottom:14px; }
   .empty p { font-family:'IBM Plex Mono',monospace; font-size:.72rem; line-height:2; }
 
@@ -328,7 +360,7 @@
 
 <div class="wrap">
 
-  <!-- ══ BRIEFING SECTION ══════════════════════════════════════ -->
+  <!-- ══ BRIEFING INTERNACIONAL ════════════════════════════════ -->
   <div id="briefing-section">
     <div class="briefing-header">
       <div class="briefing-header-left">
@@ -341,67 +373,257 @@
         <button class="btn-briefing-refresh" id="btn-briefing-refresh" onclick="loadBriefing(true)">↻ Regenerar</button>
       </div>
     </div>
-
-    <div id="briefing-status">
-      <span class="spinner"></span>
-      Generando análisis de actualidad…
-    </div>
-
+    <div id="briefing-status"><span class="spinner"></span>Generando análisis de actualidad…</div>
     <div id="briefing-body"></div>
     <div id="briefing-error" class="briefing-error"></div>
   </div>
 
-  <!-- ══ CONTROLES DE FUENTES Y CATEGORÍAS ══════════════════════ -->
-  <div class="controls">
-    <span class="mono-label">Fuentes</span>
-    <div class="chip on-bbc" id="chip-BBC" onclick="toggleSource('BBC')"><span class="dot"></span>BBC Mundo</div>
-    <div class="chip on-aje" id="chip-AJE" onclick="toggleSource('AJE')"><span class="dot"></span>Al Jazeera</div>
-    <div class="chip on-f24" id="chip-F24" onclick="toggleSource('F24')"><span class="dot"></span>France 24</div>
-    <button class="btn-refresh" id="refresh-btn" onclick="load()">↻ Actualizar</button>
+  <!-- ══ SECCIÓN NOTICIAS NACIONALES ════════════════════════════ -->
+  <div class="nat-section" style="margin-top:28px;">
+    <div class="nat-section-header">
+      <div class="nat-section-header-left">
+        <span class="nat-kicker"><span class="nat-kicker-line"></span>Chile</span>
+        <span class="nat-section-title">Noticias Nacionales</span>
+      </div>
+      <div class="briefing-meta">
+        <span id="nat-ts" style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--text-dim);"></span>
+      </div>
+    </div>
+
+    <div class="nat-section-body">
+      <!-- Controles de fuentes nacionales -->
+      <div class="nat-controls">
+        <span class="mono-label">Fuentes</span>
+        <div class="nat-chip on-emol"  id="nat-chip-EMOL"  onclick="natToggleSource('EMOL')"><span class="dot"></span>Emol</div>
+        <div class="nat-chip on-coop"  id="nat-chip-COOP"  onclick="natToggleSource('COOP')"><span class="dot"></span>Cooperativa</div>
+        <div class="nat-chip on-elmos" id="nat-chip-ELMOS" onclick="natToggleSource('ELMOS')"><span class="dot"></span>El Mostrador</div>
+        <button class="btn-refresh-nat" id="nat-refresh-btn" onclick="natLoad()">↻ Actualizar</button>
+      </div>
+
+      <!-- Filtros de categorías nacionales -->
+      <div class="nat-cat-controls">
+        <span class="mono-label">Categorías</span>
+        <div class="nat-cat-all active" id="nat-cat-all" onclick="natToggleAll()">Todas</div>
+        <div class="nat-cat-chip" id="nat-cat-politica"  onclick="natToggleCat('politica')"> <span class="cat-icon">🏛</span> Política</div>
+        <div class="nat-cat-chip" id="nat-cat-economia"  onclick="natToggleCat('economia')"> <span class="cat-icon">📊</span> Economía</div>
+      </div>
+
+      <div id="nat-status" class="loading"><span class="spinner-nat"></span>Cargando noticias nacionales...</div>
+      <div id="nat-stats"></div>
+      <div id="nat-list"></div>
+    </div>
   </div>
 
-  <div class="cat-controls">
-    <span class="mono-label">Categorías</span>
-    <div class="cat-all active" id="cat-all" onclick="toggleAll()">Todas</div>
-    <div class="cat-chip" id="cat-guerra"     onclick="toggleCat('guerra')">    <span class="cat-icon">⚔</span>  Guerra & Conflicto</div>
-    <div class="cat-chip" id="cat-diplomacia" onclick="toggleCat('diplomacia')"><span class="cat-icon">🤝</span> Diplomacia</div>
-    <div class="cat-chip" id="cat-politica"   onclick="toggleCat('politica')">  <span class="cat-icon">🏛</span> Política</div>
-    <div class="cat-chip" id="cat-economia"   onclick="toggleCat('economia')">  <span class="cat-icon">📊</span> Economía</div>
-    <div class="cat-chip" id="cat-clima"      onclick="toggleCat('clima')">     <span class="cat-icon">🌍</span> Clima & Energía</div>
-    <div class="cat-chip" id="cat-tecnologia" onclick="toggleCat('tecnologia')"><span class="cat-icon">💡</span> Tecnología</div>
-    <div class="cat-chip" id="cat-sociedad"   onclick="toggleCat('sociedad')">  <span class="cat-icon">👥</span> Sociedad</div>
-  </div>
+  <!-- ══ SECCIÓN NOTICIAS INTERNACIONALES ══════════════════════ -->
+  <div class="intl-section" style="margin-top:28px;">
+    <div class="intl-section-header">
+      <div class="intl-section-header-left">
+        <span class="intl-kicker"><span class="intl-kicker-line"></span>Internacional</span>
+        <span class="intl-section-title">Noticias Internacionales</span>
+      </div>
+      <div class="briefing-meta">
+        <span id="ts" style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;color:var(--text-dim);"></span>
+      </div>
+    </div>
 
-  <div id="status" class="loading"><span class="spinner"></span>Cargando noticias...</div>
-  <div id="stats"></div>
-  <div id="list"></div>
+    <div class="intl-section-body">
+      <div class="intl-controls">
+        <span class="mono-label">Fuentes</span>
+        <div class="chip on-bbc" id="chip-BBC" onclick="toggleSource('BBC')"><span class="dot"></span>BBC Mundo</div>
+        <div class="chip on-aje" id="chip-AJE" onclick="toggleSource('AJE')"><span class="dot"></span>Al Jazeera</div>
+        <div class="chip on-f24" id="chip-F24" onclick="toggleSource('F24')"><span class="dot"></span>France 24</div>
+        <button class="btn-refresh" id="refresh-btn" onclick="load()">↻ Actualizar</button>
+      </div>
+
+      <div class="intl-cat-controls">
+        <span class="mono-label">Categorías</span>
+        <div class="cat-all active" id="cat-all" onclick="toggleAll()">Todas</div>
+        <div class="cat-chip" id="cat-conflicto" onclick="toggleCat('conflicto')"><span class="cat-icon">⚔</span>  Conflicto & Inestabilidad</div>
+        <div class="cat-chip" id="cat-politica"  onclick="toggleCat('politica')"> <span class="cat-icon">🏛</span> Política Internacional</div>
+        <div class="cat-chip" id="cat-economia"  onclick="toggleCat('economia')"> <span class="cat-icon">📊</span> Economía & Comercio</div>
+      </div>
+
+      <div id="status" class="loading"><span class="spinner"></span>Cargando noticias...</div>
+      <div id="stats"></div>
+      <div id="list"></div>
+    </div>
+  </div>
 </div>
 
-<footer>Diplomatica · BBC Mundo · Al Jazeera · France 24 · vía RSS</footer>
+<footer>Diplomatica · BBC Mundo · Al Jazeera · France 24 · Emol · Cooperativa · El Mostrador · vía RSS</footer>
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbzA_FCEMdzW6hj2OjaRP7TLroAekGQbhMaPlvCRaCgu2amk9k-GNEdjrEL5dAlR6BiTtw/exec";
+
+// ─── ETIQUETAS Y COLORES ─────────────────────────────────────────
 const LABELS  = { BBC:"BBC Mundo", AJE:"Al Jazeera", F24:"France 24" };
 const COLORS  = { BBC:"#d47070",   AJE:"#e8a83a",    F24:"#5aa0d4"  };
+const NAT_LABELS = { EMOL:"Emol", COOP:"Cooperativa", ELMOS:"El Mostrador" };
+const NAT_COLORS = { EMOL:"#7ea8c9", COOP:"#64b482", ELMOS:"#b478c8" };
 
+// ─── CATEGORÍAS INTERNACIONALES (3 macro-categorías diplomáticas) ─
 const CATEGORIES = {
-  guerra:     { label:"Guerra & Conflicto", icon:"⚔",  keywords:["guerra","ataque","bombardeo","misil","cohete","bomba","explosión","muertos","víctimas","ofensiva","invasión","tropas","milicia","conflicto","combate","disparos","heridos","frente","tregua","alto al fuego","ocupación","operación militar","drone","ejército","fuerzas armadas","muertes","fallecidos","war","attack","bombing","missile","rocket","troops","military","battle","combat","killed","offensive","invasion","airstrike","strike","casualties","soldiers","army","navy","hamas","hezbollah","isis","daesh","talibán","taliban","ukraine","ucrania","gaza","sudan","russia","rusia","israel","palestina","myanmar","yemen","siria","syria","irak","iraq"] },
-  diplomacia: { label:"Diplomacia",         icon:"🤝", keywords:["acuerdo","tratado","cumbre","negociación","canciller","embajada","embajador","relaciones exteriores","alianza","pacto","onu","naciones unidas","otan","nato","g7","g20","unión europea","asean","sanción","sanciones","diplomático","diplomacia","mediación","delegación","bilateral","multilateral","cooperación internacional","agreement","treaty","summit","negotiation","ambassador","embassy","united nations","alliance","pact","sanction","diplomatic","mediation"] },
-  politica:   { label:"Política",           icon:"🏛", keywords:["elección","elecciones","presidente","gobierno","parlamento","partido","voto","votación","golpe de estado","congreso","senado","primer ministro","democracia","dictadura","referéndum","plebiscito","oposición","coalición","candidato","mandatario","ministro","gabinete","reforma","constitución","decreto","election","president","government","parliament","party","vote","coup","congress","prime minister","democracy","dictatorship","referendum","minister","cabinet","reform","constitution","law","political","politics","policy"] },
-  economia:   { label:"Economía",           icon:"📊", keywords:["economía","aranceles","arancel","mercado","inflación","pib","banco","petróleo","deuda","comercio","exportación","importación","fmi","banco mundial","reserva federal","bolsa","acciones","inversión","déficit","recesión","crecimiento","empleo","desempleo","salario","impuesto","moneda","dólar","euro","yuan","criptomoneda","finanzas","presupuesto","economy","tariff","market","inflation","gdp","debt","trade","export","import","imf","world bank","stock","investment","recession","growth","unemployment","wage","tax","currency","dollar","finance","budget","opec","brent","crude"] },
-  clima:      { label:"Clima & Energía",    icon:"🌍", keywords:["clima","cambio climático","co2","emisiones","calentamiento","inundación","sequía","huracán","tifón","ciclón","terremoto","tsunami","desastre natural","incendio forestal","energía renovable","solar","eólica","nuclear","hidrógeno","carbono","cop","acuerdo de paris","descarbonización","medioambiente","biodiversidad","deforestación","contaminación","océano","glaciar","climate","climate change","emissions","warming","flood","drought","hurricane","earthquake","natural disaster","wildfire","renewable","wind","nuclear","hydrogen","carbon","coal","environment","biodiversity","deforestation","pollution","ocean","glacier"] },
-  tecnologia: { label:"Tecnología",         icon:"💡", keywords:["tecnología","inteligencia artificial","ia","ai","ciberseguridad","hackeo","hack","espacio","satélite","nasa","spacex","chip","semiconductores","internet","redes sociales","datos","privacidad","vigilancia","5g","quantum","robot","automatización","deepfake","desinformación","microsoft","google","apple","meta","amazon","openai","tiktok","huawei","technology","artificial intelligence","cybersecurity","hacking","space","satellite","semiconductor","data","privacy","surveillance","automation","social media"] },
-  sociedad:   { label:"Sociedad",           icon:"👥", keywords:["migrante","migrantes","refugiado","refugiados","asilo","migración","desplazados","derechos humanos","libertad","protestas","manifestación","huelga","salud","pandemia","vacuna","epidemia","hambre","pobreza","desigualdad","educación","género","feminismo","discriminación","racismo","religión","crimen","narcotráfico","corrupción","justicia","tribunal","migrant","refugee","asylum","migration","displaced","human rights","freedom","protest","strike","health","pandemic","vaccine","epidemic","hunger","poverty","inequality","education","gender","discrimination","racism","religion","crime","corruption","justice","court"] }
+  conflicto: {
+    label: "Conflicto & Inestabilidad", icon: "⚔",
+    keywords: [
+      // Conflictos armados y guerras
+      "guerra","guerra civil","conflicto armado","invasión","ofensiva","bombardeo",
+      "ataque aéreo","misil","cohete","drone","operación militar","frente de batalla",
+      "tregua","alto al fuego","ocupación","tropas","ejército","fuerzas armadas",
+      "milicia","insurgencia","rebelión","golpe de estado","golpe militar",
+      "war","civil war","invasion","offensive","airstrike","missile","rocket",
+      "ceasefire","troops","military operation","insurgency","rebellion","coup",
+      // Actores de conflicto activos
+      "hamas","hezbollah","isis","daesh","talibán","taliban","wagner","houthi","huthi",
+      // Escenarios activos
+      "ucrania","ukraine","gaza","sudan","myanmar","yemen","siria","syria","sahel",
+      "mali","burkina faso","niger","somalia","etiopía","ethiopia","nagorno","cachemira",
+      // Inestabilidad política sistémica
+      "dictadura","régimen autoritario","estado fallido","represión","purga",
+      "estado de sitio","estado de emergencia","toque de queda",
+      "protesta masiva","revuelta","levantamiento popular","disturbios","manifestación violenta",
+      "dictatorship","authoritarian","failed state","repression","state of emergency",
+      "mass protest","uprising","revolt","unrest",
+      // Crimen organizado de escala geopolítica
+      "narcoestado","cártel","crimen organizado transnacional","tráfico de armas",
+      "narco","cartel","arms trafficking","transnational crime"
+    ]
+  },
+  politica: {
+    label: "Política Internacional", icon: "🏛",
+    keywords: [
+      // Diplomacia bilateral y multilateral
+      "cumbre","reunión bilateral","visita oficial","visita de estado",
+      "canciller","cancillería","secretario de estado","ministro de relaciones exteriores",
+      "embajador","embajada","diplomacia","relaciones exteriores","relaciones bilaterales",
+      "summit","bilateral meeting","state visit","chancellor","secretary of state",
+      "foreign minister","ambassador","embassy","diplomacy","foreign relations",
+      // Organismos internacionales
+      "onu","naciones unidas","consejo de seguridad","asamblea general",
+      "otan","nato","unión europea","asean","g7","g20","ocde","fmi","banco mundial",
+      "celac","unasur","mercosur","alianza del pacífico","apec","ua","african union",
+      "united nations","security council","general assembly","european union","imf","world bank",
+      // Acuerdos y tratados políticos
+      "acuerdo","tratado","pacto","declaración conjunta","comunicado","alianza","sanción",
+      "agreement","treaty","pact","joint declaration","communiqué","alliance","sanction",
+      // Elecciones y procesos políticos nacionales relevantes
+      "elección presidencial","elecciones generales","primera vuelta","segunda vuelta",
+      "referéndum","plebiscito","transición de poder","investidura","toma de posesión",
+      "presidential election","general election","referendum","transition of power","inauguration",
+      // Mandatarios y política de alto nivel
+      "presidente","primer ministro","jefe de estado","jefe de gobierno","mandatario",
+      "president","prime minister","head of state","head of government","chancellor",
+      // Geopolítica estructural
+      "geopolítica","influencia","hegemonía","multipolaridad","alianza estratégica",
+      "zona de influencia","expansión","contención","disuasión","soberanía","autodeterminación",
+      "geopolitics","hegemony","multipolarity","strategic alliance","sphere of influence",
+      "deterrence","sovereignty","self-determination"
+    ]
+  },
+  economia: {
+    label: "Economía & Comercio", icon: "📊",
+    keywords: [
+      // Comercio y acuerdos económicos
+      "tratado de libre comercio","tlc","acuerdo comercial","aranceles","arancel",
+      "guerra comercial","barreras comerciales","exportación","importación","balanza comercial",
+      "free trade agreement","trade deal","tariff","trade war","trade barrier",
+      "export","import","trade balance","trade surplus","trade deficit",
+      // Inversión y finanzas globales
+      "inversión extranjera","inversión directa","fondo de inversión","deuda soberana",
+      "calificación crediticia","bono","mercados emergentes","capital","privatización",
+      "foreign investment","direct investment","sovereign debt","credit rating","bond",
+      "emerging markets","capital flows","privatization",
+      // Instituciones económicas internacionales
+      "fmi","banco mundial","ocde","banco de desarrollo","bce","reserva federal",
+      "imf","world bank","oecd","development bank","ecb","federal reserve",
+      // Energía y recursos estratégicos
+      "petróleo","gas natural","energía","opep","opec","brent","sanciones energéticas",
+      "litio","minerales críticos","semiconductores","cadena de suministro",
+      "oil","natural gas","energy","crude","energy sanctions",
+      "lithium","critical minerals","semiconductors","supply chain",
+      // Macroeconomía con impacto geopolítico
+      "inflación global","recesión","crecimiento económico","pib mundial",
+      "crisis financiera","contagio económico","moneda de reserva","desdolarización",
+      "global inflation","recession","global growth","financial crisis",
+      "reserve currency","de-dollarization","yuan","renminbi","eurobono",
+      // Sanciones económicas (también cubiertas en política, refuerzo aquí)
+      "sanción económica","embargo","bloqueo económico","congelamiento de activos",
+      "economic sanction","embargo","asset freeze"
+    ]
+  }
 };
 
-let activeSources = new Set(["BBC","AJE","F24"]);
-let activeCats    = new Set();
-let allNews       = [];
-const summaryCache = {};
-let briefingCollapsed = false;
-let visibleDays = 5; // días visibles por defecto
+// ─── CATEGORÍAS NACIONALES ────────────────────────────────────────
+// Solo política y economía, pero con keywords específicas para Chile
+const NAT_CATEGORIES = {
+  politica: {
+    label: "Política",
+    icon: "🏛",
+    keywords: [
+      // Instituciones
+      "presidente","gobierno","ministerio","ministro","ministra","gabinete",
+      "congreso","senado","senador","diputado","diputada","cámara","parlamento",
+      "constitución","constitucional","tribunal constitucional",
+      "contraloría","poder judicial","corte suprema",
+      // Procesos políticos
+      "proyecto de ley","reforma","decreto","veto","promulgó","promulgación",
+      "acusación constitucional","interpelación","moción","urgencia",
+      "elección","elecciones","campaña","candidato","candidata","plebiscito",
+      "partido","coalición","oposición","oficialismo","apruebo","rechazo",
+      // Actores
+      "boric","von baer","matthei","evópoli","udi","rn","pdc","ps","ppd","pc","fa","frente amplio",
+      "la moneda","palacio","vocero","vocería","comité político",
+      // Seguridad / orden público relevante para diplomático
+      "estado de excepción","toque de queda","carabineros","pdi","fuerzas armadas",
+      "narcotráfico","crimen organizado","migración","frontera norte",
+      // Política exterior
+      "cancillería","relaciones exteriores","embajador","embajada","tratado",
+      "acuerdo bilateral","celac","unasur","prosur","apec","pacific alliance","alianza del pacífico"
+    ]
+  },
+  economia: {
+    label: "Economía",
+    icon: "📊",
+    keywords: [
+      // Macro
+      "pib","inflación","ipc","banco central","tasa de política monetaria","tpm",
+      "déficit fiscal","deuda pública","presupuesto","hacienda","ministerio de hacienda",
+      "fondo soberano","pensiones","afp","reforma previsional",
+      // Sector externo
+      "cobre","codelco","precio del cobre","lme","exportaciones","balanza comercial",
+      "tipo de cambio","dólar","peso","reservas internacionales",
+      "tratado de libre comercio","tlc","aranceles",
+      // Laboral / social
+      "desempleo","desocupación","empleo","salario mínimo","informalidad",
+      "remuneraciones","huelga","sindical","negociación colectiva",
+      // Sector financiero / empresarial
+      "bolsa de santiago","ipsa","inversión extranjera","concesión","licitación",
+      "cmf","svs","sernac","free competition","fusión","adquisición",
+      // Energía / recursos
+      "litio","minería","energía","electricidad","tarifa eléctrica","agua",
+      "sequía","racionamiento","gas natural","combustible","bencina",
+      // Tributario
+      "reforma tributaria","impuesto","iva","impuesto a la renta","evasión",
+      "sii","royalty minero"
+    ]
+  }
+};
 
-// ── Briefing ─────────────────────────────────────────────────────
+// ─── ESTADO ───────────────────────────────────────────────────────
+let activeSources    = new Set(["BBC","AJE","F24"]);
+let activeCats       = new Set();
+let allNews          = [];
+let natActiveSources = new Set(["EMOL","COOP","ELMOS"]);
+let natActiveCats    = new Set();
+let natAllNews       = [];
+const summaryCache   = {};
+let briefingCollapsed = false;
+let visibleDays      = 5;
+let natVisibleDays   = 5;
+
+// ──────────────────────────────────────────────────────────────────
+//  BRIEFING
+// ──────────────────────────────────────────────────────────────────
 async function loadBriefing(force = false) {
   const statusEl = document.getElementById("briefing-status");
   const bodyEl   = document.getElementById("briefing-body");
@@ -409,8 +631,8 @@ async function loadBriefing(force = false) {
   const btnRef   = document.getElementById("btn-briefing-refresh");
   const dateEl   = document.getElementById("briefing-date");
 
-  bodyEl.style.display = "none";
-  errorEl.style.display = "none";
+  bodyEl.style.display   = "none";
+  errorEl.style.display  = "none";
   statusEl.style.display = "flex";
   btnRef.disabled = true;
 
@@ -420,75 +642,45 @@ async function loadBriefing(force = false) {
     const res  = await fetch(API_URL + "?action=briefing", { signal: controller.signal });
     clearTimeout(timeoutId);
     const data = await res.json();
-
     if (!data.ok) throw new Error(data.error || "Error al generar briefing");
-
     const d = new Date(data.updated);
     dateEl.textContent = d.toLocaleDateString("es-CL", { weekday:"long", day:"numeric", month:"long" })
       + " · " + d.toLocaleTimeString("es-CL", { hour:"2-digit", minute:"2-digit" });
-
     renderBriefing(data.briefing);
     statusEl.style.display = "none";
-    bodyEl.style.display = "block";
-
+    bodyEl.style.display   = "block";
   } catch(e) {
     statusEl.style.display = "none";
-    errorEl.style.display = "block";
-    errorEl.textContent = "⚠ No se pudo generar el briefing: " + e.message;
+    errorEl.style.display  = "block";
+    errorEl.textContent    = "⚠ No se pudo generar el briefing: " + e.message;
   }
-
   btnRef.disabled = false;
 }
 
 function renderBriefing(text) {
   const bodyEl = document.getElementById("briefing-body");
   bodyEl.innerHTML = "";
-
-  // Parsear el formato "TEMA EN MAYÚSCULAS: párrafo."
-  // Soporta líneas que empiezan con texto en mayúsculas seguido de ":"
-  const lines = text.split("\n").filter(l => l.trim().length > 0);
-  const items = [];
-  let currentTopic = null;
-  let currentText  = [];
-
+  const lines  = text.split("\n").filter(l => l.trim().length > 0);
+  const items  = [];
+  let currentTopic = null, currentText = [];
   lines.forEach(line => {
-    const trimmed = line.trim();
-    // Detectar línea de tema: empieza con texto en mayúsculas seguido de ":"
-    // Ejemplo: "GUERRA EN UCRANIA: Lorem ipsum..."
+    const trimmed    = line.trim();
     const topicMatch = trimmed.match(/^([A-ZÁÉÍÓÚÜÑ][A-ZÁÉÍÓÚÜÑ\s&·\-\/]{2,60}):\s*(.*)/);
     if (topicMatch) {
-      // Guardar el anterior si existe
-      if (currentTopic) {
-        items.push({ topic: currentTopic, text: currentText.join(" ").trim() });
-      }
+      if (currentTopic) items.push({ topic: currentTopic, text: currentText.join(" ").trim() });
       currentTopic = topicMatch[1].trim();
       currentText  = topicMatch[2] ? [topicMatch[2].trim()] : [];
     } else {
-      // Continuación del párrafo actual
-      if (currentTopic) {
-        currentText.push(trimmed);
-      } else {
-        // Texto antes del primer tema (intro)
-        items.push({ topic: "", text: trimmed });
-      }
+      if (currentTopic) currentText.push(trimmed);
+      else items.push({ topic: "", text: trimmed });
     }
   });
-
-  // Guardar el último
-  if (currentTopic) {
-    items.push({ topic: currentTopic, text: currentText.join(" ").trim() });
-  }
-
-  // Si no encontró el formato esperado, mostrar como texto plano
+  if (currentTopic) items.push({ topic: currentTopic, text: currentText.join(" ").trim() });
   if (items.length === 0) {
     const div = document.createElement("div");
-    div.className = "briefing-text";
-    div.style.padding = "0";
-    div.textContent = text;
-    bodyEl.appendChild(div);
-    return;
+    div.className = "briefing-text"; div.style.padding = "0"; div.textContent = text;
+    bodyEl.appendChild(div); return;
   }
-
   items.forEach((item, i) => {
     const el = document.createElement("div");
     el.className = "briefing-item";
@@ -498,8 +690,7 @@ function renderBriefing(text) {
       <div class="briefing-item-content">
         ${item.topic ? `<div class="briefing-topic">${escapeHtml(item.topic)}</div>` : ""}
         <div class="briefing-text">${escapeHtml(item.text)}</div>
-      </div>
-    `;
+      </div>`;
     bodyEl.appendChild(el);
   });
 }
@@ -509,17 +700,12 @@ function toggleBriefingPanel() {
   const statusEl = document.getElementById("briefing-status");
   const errorEl  = document.getElementById("briefing-error");
   const btn      = document.getElementById("btn-briefing-toggle");
-
   briefingCollapsed = !briefingCollapsed;
-
   if (briefingCollapsed) {
-    const wasVisible = bodyEl.style.display !== "none" || statusEl.style.display !== "none";
     bodyEl.dataset.prevDisplay   = bodyEl.style.display;
     statusEl.dataset.prevDisplay = statusEl.style.display;
     errorEl.dataset.prevDisplay  = errorEl.style.display;
-    bodyEl.style.display   = "none";
-    statusEl.style.display = "none";
-    errorEl.style.display  = "none";
+    bodyEl.style.display = statusEl.style.display = errorEl.style.display = "none";
     btn.textContent = "Expandir";
   } else {
     bodyEl.style.display   = bodyEl.dataset.prevDisplay   || "none";
@@ -529,41 +715,234 @@ function toggleBriefingPanel() {
   }
 }
 
-function escapeHtml(s) {
-  return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+// ──────────────────────────────────────────────────────────────────
+//  NACIONALES — carga y filtrado
+// ──────────────────────────────────────────────────────────────────
+
+// Palabras a excluir en nacional (deportes, farándula, etc.)
+const NAT_EXCLUDE = [
+  "fútbol","gol","partido","torneo","campeonato","liga","selección chilena",
+  "la roja","colo colo","universidad de chile","universidad católica","audax",
+  "tenis","atleta","deporte","copa","mundial de","carrera","piloto","ciclismo",
+  "farándula","corazón","romance","novio","novia","pareja","matrimonio","boda",
+  "reality","gran hermano","bailando","cantando","artista","canción","álbum",
+  "horóscopo","receta","cocina","viaje","turismo","hotel","destino",
+  "entretenimiento","espectáculo","cine","película","serie","telenovela"
+];
+
+function natIsRelevant(item) {
+  const text = ((item.title||"") + " " + (item.desc||"")).toLowerCase();
+  // Excluir farándula/deportes
+  if (NAT_EXCLUDE.some(kw => text.includes(kw))) return false;
+  // Solo incluir si tiene keywords de política O economía
+  const hasPolitica  = NAT_CATEGORIES.politica.keywords.some(kw => text.includes(kw));
+  const hasEconomia  = NAT_CATEGORIES.economia.keywords.some(kw => text.includes(kw));
+  return hasPolitica || hasEconomia;
 }
 
-// ── Feed ──────────────────────────────────────────────────────────
+function natCategorize(item) {
+  const text    = ((item.title||"") + " " + (item.desc||"")).toLowerCase();
+  const matched = [];
+  for (const [key, cat] of Object.entries(NAT_CATEGORIES)) {
+    if (cat.keywords.some(kw => text.includes(kw))) matched.push(key);
+  }
+  return matched.length > 0 ? matched : ["general"];
+}
 
+function natTagAllNews() {
+  natAllNews.forEach(item => { item.cats = natCategorize(item); });
+}
+
+function natToggleSource(src) {
+  const chip = document.getElementById("nat-chip-" + src);
+  if (natActiveSources.has(src)) {
+    natActiveSources.delete(src);
+    chip.className = "nat-chip";
+  } else {
+    natActiveSources.add(src);
+    chip.className = "nat-chip on-" + src.toLowerCase();
+  }
+  natRender();
+}
+
+function natToggleAll() {
+  natActiveCats.clear();
+  Object.keys(NAT_CATEGORIES).forEach(k => document.getElementById("nat-cat-"+k).classList.remove("active"));
+  document.getElementById("nat-cat-all").classList.add("active");
+  natRender();
+}
+
+function natToggleCat(key) {
+  if (natActiveCats.has(key)) {
+    natActiveCats.delete(key);
+    document.getElementById("nat-cat-"+key).classList.remove("active");
+  } else {
+    natActiveCats.add(key);
+    document.getElementById("nat-cat-"+key).classList.add("active");
+    document.getElementById("nat-cat-all").classList.remove("active");
+  }
+  if (natActiveCats.size === 0) document.getElementById("nat-cat-all").classList.add("active");
+  natRender();
+}
+
+window.onload = () => {
+  natLoad();
+  load();
+  loadBriefing();
+};
+
+async function natLoad() {
+  const btn = document.getElementById("nat-refresh-btn");
+  btn.disabled = true;
+  natSetStatus('<span class="spinner-nat"></span>Cargando noticias nacionales...', "loading");
+  document.getElementById("nat-list").innerHTML  = "";
+  document.getElementById("nat-stats").style.display = "none";
+  try {
+    const controller = new AbortController();
+    const timeoutId  = setTimeout(() => controller.abort(), 25000);
+    const res  = await fetch(API_URL + "?action=nacional", { signal: controller.signal });
+    clearTimeout(timeoutId);
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || "Error en el script");
+    natAllNews = data.items || [];
+    natTagAllNews();
+    const d = new Date(data.updated);
+    document.getElementById("nat-ts").textContent = "Actualizado: " + d.toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});
+    natSetStatus(`✓ ${natAllNews.length} noticias nacionales cargadas.`, "done");
+    natRender();
+  } catch(e) {
+    natSetStatus("Error: " + e.message, "error");
+    document.getElementById("nat-list").innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><p>No se pudo conectar.<br>Intenta de nuevo.</p></div>`;
+  }
+  btn.disabled = false;
+}
+
+function natRender() {
+  const list  = document.getElementById("nat-list");
+  const stats = document.getElementById("nat-stats");
+
+  let items = natAllNews.filter(i => natActiveSources.has(i.source) && natIsRelevant(i));
+  if (natActiveCats.size > 0) {
+    items = items.filter(i => i.cats && i.cats.some(c => natActiveCats.has(c)));
+  }
+
+  if (!items.length) {
+    list.innerHTML = `<div class="empty"><div class="empty-icon">∅</div><p>No hay noticias nacionales.<br>Activa al menos una fuente.</p></div>`;
+    stats.style.display = "none";
+    return;
+  }
+
+  // Agrupar por día
+  const groups = {}, groupOrder = [];
+  items.forEach(item => {
+    const key = getDayKey(item.pubDate);
+    if (!groups[key]) { groups[key] = []; groupOrder.push(key); }
+    groups[key].push(item);
+  });
+
+  const visibleGroups = groupOrder.slice(0, natVisibleDays);
+  const hiddenGroups  = groupOrder.slice(natVisibleDays);
+  const visibleItems  = visibleGroups.reduce((acc, k) => acc.concat(groups[k]), []);
+
+  const counts = {};
+  visibleItems.forEach(i => counts[i.source] = (counts[i.source]||0)+1);
+  stats.innerHTML = `<b>${visibleItems.length}</b> noticias · ` + Object.entries(counts).map(([s,n]) => `${NAT_LABELS[s]}: <b style="color:${NAT_COLORS[s]}">${n}</b>`).join(" · ");
+  stats.style.display = "flex";
+
+  list.innerHTML = "";
+  let globalIdx = 0;
+
+  visibleGroups.forEach(dayKey => {
+    const dayItems = groups[dayKey];
+    const label    = formatDayLabel(dayItems[0].pubDate);
+
+    const sep = document.createElement("div");
+    sep.className = "date-separator";
+    sep.innerHTML = `<span class="date-label nat">${label}</span><span class="date-line nat"></span><span class="date-count">${dayItems.length} noticias</span>`;
+    list.appendChild(sep);
+
+    const group = document.createElement("div");
+    group.className = "date-group";
+
+    dayItems.forEach(item => {
+      const card   = document.createElement("div");
+      card.className = "card nat-card";
+      card.style.animation = `fadeUp 0.25s ease ${Math.min(globalIdx*0.025,0.5)}s both`;
+      const cardId = "nat-card-" + globalIdx;
+      globalIdx++;
+
+      const visibleCats = (item.cats||[]).filter(c => c !== "general");
+      const catTagsHTML = visibleCats.map(c => {
+        const cat = NAT_CATEGORIES[c];
+        return cat ? `<span class="cat-tag-nat">${cat.icon} ${cat.label}</span>` : "";
+      }).join("");
+
+      card.innerHTML = `
+        <div class="card-meta">
+          <span class="badge badge-${item.source}">${NAT_LABELS[item.source]}</span>
+          ${catTagsHTML}
+          <span class="card-date">${formatDate(item.pubDate)}</span>
+        </div>
+        <div class="card-title">
+          <a href="${esc(item.link)}" target="_blank" rel="noopener">${esc(item.title)}</a>
+        </div>
+        ${item.desc ? `<div class="card-desc">${esc(item.desc)}</div>` : ""}
+        <div class="card-footer">
+          <button class="btn-summarize nat-sum" id="btn-${cardId}">✦ Resumir con IA</button>
+        </div>
+        <div class="summary-panel nat-panel" id="panel-${cardId}">
+          <div class="summary-label nat-label"><span class="ai-dot nat" id="dot-${cardId}"></span>Análisis · IA</div>
+          <div class="summary-text" id="text-${cardId}"></div>
+        </div>`;
+
+      const btn = card.querySelector(".btn-summarize");
+      btn._title = item.title || ""; btn._desc = item.desc || "";
+      btn._link  = item.link  || ""; btn._id   = cardId;
+      btn.addEventListener("click", function() {
+        toggleSummary(this._id, this._title, this._desc, this._link, true);
+      });
+      group.appendChild(card);
+    });
+    list.appendChild(group);
+  });
+
+  if (hiddenGroups.length > 0) {
+    const btn = document.createElement("button");
+    btn.className = "btn-load-more nat";
+    const totalHidden = hiddenGroups.reduce((acc,k) => acc+groups[k].length, 0);
+    btn.textContent = `↓ Ver ${totalHidden} noticias anteriores (${hiddenGroups.length} días más)`;
+    btn.onclick = () => { natVisibleDays += 5; natRender(); };
+    list.appendChild(btn);
+  }
+}
+
+// ──────────────────────────────────────────────────────────────────
+//  INTERNACIONALES — carga y filtrado (sin cambios)
+// ──────────────────────────────────────────────────────────────────
 const EXCLUDE_KEYWORDS = [
-  // Farándula y entretenimiento
   "rihanna","beyoncé","taylor swift","kardashian","justin bieber","lady gaga",
   "kanye west","ariana grande","selena gomez","miley cyrus",
-  // Deportes
   "nba","nfl","champions league","premier league","liga española","bundesliga",
   "serie a","ligue 1","fórmula 1","formula 1","tour de france","wimbledon",
   "super bowl","mundial de fútbol","copa del mundo","roland garros","us open",
   "copa america","eurocopa","balón de oro","transferencia de jugador",
-  // Turismo y lifestyle
   "bali","destino turístico","turismo inmobiliario","resort","paraíso tropical",
   "mejores playas","viaje a","qué ver en","guía de viaje",
-  // Crimen no internacional
   "dispararon a la casa","arrestaron a una mujer","arrestaron a un hombre",
   "asesinó a su","mató a su","crimen en los ángeles","crimen en nueva york",
   "tiroteo en","asaltaron","robo en",
-  // Cultura pop
   "oscar","grammy","emmy","golden globe","mtv awards","billboard",
   "película de","serie de netflix","temporada de","reality show",
   "horóscopo","receta de","recetas para"
 ];
 
 function isRelevant(item) {
-  const text = ((item.title || "") + " " + (item.desc || "")).toLowerCase();
+  const text = ((item.title||"") + " " + (item.desc||"")).toLowerCase();
   return !EXCLUDE_KEYWORDS.some(kw => text.includes(kw));
 }
 
 function categorize(item) {
-  const text = ((item.title||"") + " " + (item.desc||"")).toLowerCase();
+  const text    = ((item.title||"") + " " + (item.desc||"")).toLowerCase();
   const matched = [];
   for (const [key, cat] of Object.entries(CATEGORIES)) {
     if (cat.keywords.some(kw => text.includes(kw))) matched.push(key);
@@ -578,7 +957,6 @@ function toggleSource(src) {
   else { activeSources.add(src); chip.className = "chip on-" + src.toLowerCase(); }
   render();
 }
-
 function toggleAll() {
   activeCats.clear();
   Object.keys(CATEGORIES).forEach(k => document.getElementById("cat-"+k).classList.remove("active"));
@@ -592,16 +970,11 @@ function toggleCat(key) {
   render();
 }
 
-window.onload = () => {
-  load();
-  loadBriefing();
-};
-
 async function load() {
   const btn = document.getElementById("refresh-btn");
   btn.disabled = true;
   setStatus('<span class="spinner"></span>Cargando noticias...', "loading");
-  document.getElementById("list").innerHTML = "";
+  document.getElementById("list").innerHTML  = "";
   document.getElementById("stats").style.display = "none";
   try {
     const controller = new AbortController();
@@ -616,58 +989,33 @@ async function load() {
     document.getElementById("ts").textContent = "Actualizado: " + d.toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});
     setStatus(`✓ ${allNews.length} noticias cargadas.`, "done");
     render();
-  } catch (e) {
+  } catch(e) {
     setStatus("Error: " + e.message, "error");
     document.getElementById("list").innerHTML = `<div class="empty"><div class="empty-icon">⚠</div><p>No se pudo conectar.<br>Intenta de nuevo.</p></div>`;
   }
   btn.disabled = false;
 }
 
-function formatDayLabel(dateStr) {
-  const d = new Date(dateStr);
-  if (isNaN(d)) return null;
-  const today     = new Date();
-  const yesterday = new Date();
-  yesterday.setDate(today.getDate() - 1);
-  const sameDay = (a, b) => a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
-  if (sameDay(d, today))     return "Hoy · " + d.toLocaleDateString("es-CL", { day:"numeric", month:"long" });
-  if (sameDay(d, yesterday)) return "Ayer · " + d.toLocaleDateString("es-CL", { day:"numeric", month:"long" });
-  return d.toLocaleDateString("es-CL", { weekday:"long", day:"numeric", month:"long" });
-}
-
-function getDayKey(dateStr) {
-  const d = new Date(dateStr);
-  if (isNaN(d)) return "sin-fecha";
-  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
-}
-
 function render() {
   const list  = document.getElementById("list");
   const stats = document.getElementById("stats");
-
-  let items = allNews.filter(i => activeSources.has(i.source) && isRelevant(i));
-  if (activeCats.size > 0) {
-    items = items.filter(i => i.cats && i.cats.some(c => activeCats.has(c)));
-  } else {
-    items = items.filter(i => i.cats && i.cats.some(c => c !== "general"));
-  }
+  let items   = allNews.filter(i => activeSources.has(i.source) && isRelevant(i));
+  // Con las 3 macro-categorías, excluir siempre lo que no clasifica en ninguna
+  items = items.filter(i => i.cats && i.cats.some(c => c !== "general"));
+  if (activeCats.size > 0) items = items.filter(i => i.cats && i.cats.some(c => activeCats.has(c)));
 
   if (!items.length) {
     list.innerHTML = `<div class="empty"><div class="empty-icon">∅</div><p>No hay noticias.<br>Activa al menos una fuente o categoría.</p></div>`;
-    stats.style.display = "none";
-    return;
+    stats.style.display = "none"; return;
   }
 
-  // Agrupar por día
-  const groups = {};
-  const groupOrder = [];
+  const groups = {}, groupOrder = [];
   items.forEach(item => {
     const key = getDayKey(item.pubDate);
     if (!groups[key]) { groups[key] = []; groupOrder.push(key); }
     groups[key].push(item);
   });
 
-  // Limitar a visibleDays días
   const visibleGroups = groupOrder.slice(0, visibleDays);
   const hiddenGroups  = groupOrder.slice(visibleDays);
   const visibleItems  = visibleGroups.reduce((acc, k) => acc.concat(groups[k]), []);
@@ -679,43 +1027,31 @@ function render() {
 
   list.innerHTML = "";
   let globalIdx = 0;
-
   visibleGroups.forEach(dayKey => {
     const dayItems = groups[dayKey];
     const label    = formatDayLabel(dayItems[0].pubDate);
-
-    // Separador de fecha
     const sep = document.createElement("div");
     sep.className = "date-separator";
     sep.innerHTML = `<span class="date-label">${label}</span><span class="date-line"></span><span class="date-count">${dayItems.length} noticias</span>`;
     list.appendChild(sep);
 
-    // Cards del día
     const group = document.createElement("div");
     group.className = "date-group";
-
     dayItems.forEach(item => {
       const card   = document.createElement("div");
       card.className = "card";
       card.style.animation = `fadeUp 0.25s ease ${Math.min(globalIdx*0.025,0.5)}s both`;
       const cardId = "card-" + globalIdx;
       globalIdx++;
-
       const visibleCats = (item.cats||[]).filter(c => c !== "general");
-      const catTagsHTML = visibleCats.map(c => {
-        const cat = CATEGORIES[c];
-        return cat ? `<span class="cat-tag">${cat.icon} ${cat.label}</span>` : "";
-      }).join("");
-
+      const catTagsHTML = visibleCats.map(c => { const cat=CATEGORIES[c]; return cat?`<span class="cat-tag">${cat.icon} ${cat.label}</span>`:""; }).join("");
       card.innerHTML = `
         <div class="card-meta">
           <span class="badge badge-${item.source}">${LABELS[item.source]}</span>
           ${catTagsHTML}
           <span class="card-date">${formatDate(item.pubDate)}</span>
         </div>
-        <div class="card-title">
-          <a href="${esc(item.link)}" target="_blank" rel="noopener">${esc(item.title)}</a>
-        </div>
+        <div class="card-title"><a href="${esc(item.link)}" target="_blank" rel="noopener">${esc(item.title)}</a></div>
         ${item.desc ? `<div class="card-desc">${esc(item.desc)}</div>` : ""}
         <div class="card-footer">
           <button class="btn-summarize" id="btn-${cardId}">✦ Resumir con IA</button>
@@ -723,36 +1059,29 @@ function render() {
         <div class="summary-panel" id="panel-${cardId}">
           <div class="summary-label"><span class="ai-dot" id="dot-${cardId}"></span>Análisis · IA</div>
           <div class="summary-text" id="text-${cardId}"></div>
-        </div>
-      `;
-
+        </div>`;
       const btn = card.querySelector(".btn-summarize");
-      btn._title = item.title || "";
-      btn._desc  = item.desc  || "";
-      btn._link  = item.link  || "";
-      btn._id    = cardId;
-      btn.addEventListener("click", function() {
-        toggleSummary(this._id, this._title, this._desc, this._link);
-      });
-
+      btn._title=item.title||""; btn._desc=item.desc||""; btn._link=item.link||""; btn._id=cardId;
+      btn.addEventListener("click", function() { toggleSummary(this._id, this._title, this._desc, this._link, false); });
       group.appendChild(card);
     });
-
     list.appendChild(group);
   });
 
-  // Botón "Ver más" si hay días ocultos
   if (hiddenGroups.length > 0) {
     const btn = document.createElement("button");
     btn.className = "btn-load-more";
-    const totalHidden = hiddenGroups.reduce((acc, k) => acc + groups[k].length, 0);
+    const totalHidden = hiddenGroups.reduce((acc,k) => acc+groups[k].length, 0);
     btn.textContent = `↓ Ver ${totalHidden} noticias anteriores (${hiddenGroups.length} días más)`;
     btn.onclick = () => { visibleDays += 5; render(); };
     list.appendChild(btn);
   }
 }
 
-async function toggleSummary(cardId, title, desc, link) {
+// ──────────────────────────────────────────────────────────────────
+//  RESUMEN CON IA (compartido)
+// ──────────────────────────────────────────────────────────────────
+async function toggleSummary(cardId, title, desc, link, isNat) {
   const panel = document.getElementById("panel-" + cardId);
   const btn   = document.getElementById("btn-"   + cardId);
   const dot   = document.getElementById("dot-"   + cardId);
@@ -764,7 +1093,6 @@ async function toggleSummary(cardId, title, desc, link) {
     btn.classList.remove("open");
     return;
   }
-
   if (summaryCache[cardId]) {
     text.innerHTML = summaryCache[cardId];
     panel.classList.add("visible");
@@ -780,7 +1108,8 @@ async function toggleSummary(cardId, title, desc, link) {
   panel.classList.add("visible");
 
   try {
-    const url = API_URL + "?action=summarize"
+    const actionParam = isNat ? "summarize_nat" : "summarize";
+    const url = API_URL + "?action=" + actionParam
       + "&title=" + encodeURIComponent(title)
       + "&desc="  + encodeURIComponent(desc)
       + "&url="   + encodeURIComponent(link);
@@ -792,37 +1121,55 @@ async function toggleSummary(cardId, title, desc, link) {
     const data = await res.json();
     if (!data.ok) throw new Error(data.error || "Error al resumir");
 
-    const html = data.summary.replace(/\n/g, "<br>");
+    const html = data.summary.replace(/\n/g,"<br>");
     text.innerHTML = html;
     summaryCache[cardId] = html;
     btn.textContent = "✦ Cerrar resumen";
     btn.classList.add("open");
-  } catch (e) {
+  } catch(e) {
     text.innerHTML = `<span class="summary-error">⚠ ${e.message}</span>`;
     btn.textContent = "✦ Resumir con IA";
     btn.classList.remove("open");
   }
-
   dot.classList.remove("pulsing");
   btn.disabled = false;
 }
 
-function setStatus(html, cls) { const s = document.getElementById("status"); s.innerHTML = html; s.className = cls; }
+// ──────────────────────────────────────────────────────────────────
+//  UTILIDADES
+// ──────────────────────────────────────────────────────────────────
+function setStatus(html, cls)    { const s=document.getElementById("status");     s.innerHTML=html; s.className=cls; }
+function natSetStatus(html, cls) { const s=document.getElementById("nat-status"); s.innerHTML=html; s.className=cls; }
+
+function formatDayLabel(dateStr) {
+  const d = new Date(dateStr);
+  if (isNaN(d)) return null;
+  const today=new Date(), yesterday=new Date();
+  yesterday.setDate(today.getDate()-1);
+  const sameDay=(a,b) => a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
+  if (sameDay(d,today))     return "Hoy · "+d.toLocaleDateString("es-CL",{day:"numeric",month:"long"});
+  if (sameDay(d,yesterday)) return "Ayer · "+d.toLocaleDateString("es-CL",{day:"numeric",month:"long"});
+  return d.toLocaleDateString("es-CL",{weekday:"long",day:"numeric",month:"long"});
+}
+
+function getDayKey(dateStr) {
+  const d=new Date(dateStr);
+  if (isNaN(d)) return "sin-fecha";
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
 
 function formatDate(str) {
   if (!str) return "";
-  const d    = new Date(str);
-  const diff = Math.floor((Date.now()-d)/60000);
+  const d=new Date(str), diff=Math.floor((Date.now()-d)/60000);
   if (isNaN(diff)) return str;
-  if (diff < 1)    return "ahora";
-  if (diff < 60)   return `hace ${diff} min`;
-  if (diff < 1440) return `hace ${Math.floor(diff/60)} h`;
+  if (diff<1)    return "ahora";
+  if (diff<60)   return `hace ${diff} min`;
+  if (diff<1440) return `hace ${Math.floor(diff/60)} h`;
   return d.toLocaleDateString("es-CL",{day:"numeric",month:"short"});
 }
 
-function esc(s) {
-  return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-}
+function esc(s)        { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function escapeHtml(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
 </script>
 </body>
 </html>
