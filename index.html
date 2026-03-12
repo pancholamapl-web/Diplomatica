@@ -160,6 +160,8 @@
   .nat-chip.on-emol  { border-color: rgba(126,168,201,.5); color: #7ea8c9; background: rgba(126,168,201,.08); }
   .nat-chip.on-coop  { border-color: rgba(100,180,130,.5); color: #64b482; background: rgba(100,180,130,.08); }
   .nat-chip.on-elmos { border-color: rgba(180,120,200,.5); color: #b478c8; background: rgba(180,120,200,.08); }
+  .nat-chip.on-desc  { border-color: rgba(201,112,112,.5); color: #c97070; background: rgba(201,112,112,.08); }
+  .nat-chip.on-ciper { border-color: rgba(200,169,110,.5); color: #c8a96e; background: rgba(200,169,110,.08); }
 
   .btn-refresh-nat {
     background: rgba(126,168,201,.1); border: 1px solid var(--nat-dim); border-radius: 3px;
@@ -198,6 +200,8 @@
   .badge-EMOL  { background:rgba(126,168,201,.12); color:#7ea8c9; border:1px solid rgba(126,168,201,.3); }
   .badge-COOP  { background:rgba(100,180,130,.12); color:#64b482; border:1px solid rgba(100,180,130,.3); }
   .badge-ELMOS { background:rgba(180,120,200,.12); color:#b478c8; border:1px solid rgba(180,120,200,.3); }
+  .badge-DESC  { background:rgba(201,112,112,.12); color:#c97070; border:1px solid rgba(201,112,112,.3); }
+  .badge-CIPER { background:rgba(200,169,110,.12); color:#c8a96e; border:1px solid rgba(200,169,110,.3); }
 
   /* Cat-tag nacional */
   .cat-tag-nat {
@@ -394,7 +398,9 @@
       <!-- Controles de fuentes nacionales -->
       <div class="nat-controls">
         <span class="mono-label">Fuentes</span>
-        <div class="nat-chip on-coop" id="nat-chip-COOP" onclick="natToggleSource('COOP')"><span class="dot"></span>Cooperativa</div>
+        <div class="nat-chip on-coop"  id="nat-chip-COOP"  onclick="natToggleSource('COOP')"><span class="dot"></span>Cooperativa</div>
+        <div class="nat-chip on-desc"  id="nat-chip-DESC"  onclick="natToggleSource('DESC')"><span class="dot"></span>El Desconcierto</div>
+        <div class="nat-chip on-ciper" id="nat-chip-CIPER" onclick="natToggleSource('CIPER')"><span class="dot"></span>CIPER</div>
         <button class="btn-refresh-nat" id="nat-refresh-btn" onclick="natLoad()">↻ Actualizar</button>
       </div>
 
@@ -456,8 +462,8 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzA_FCEMdzW6hj2OjaRP7TL
 // ─── ETIQUETAS Y COLORES ─────────────────────────────────────────
 const LABELS  = { BBC:"BBC Mundo", AJE:"Al Jazeera", F24:"France 24" };
 const COLORS  = { BBC:"#d47070",   AJE:"#e8a83a",    F24:"#5aa0d4"  };
-const NAT_LABELS = { EMOL:"Emol", COOP:"Cooperativa", ELMOS:"El Mostrador" };
-const NAT_COLORS = { EMOL:"#7ea8c9", COOP:"#64b482", ELMOS:"#b478c8" };
+const NAT_LABELS = { EMOL:"Emol", COOP:"Cooperativa", ELMOS:"El Mostrador", DESC:"El Desconcierto", CIPER:"CIPER" };
+const NAT_COLORS = { EMOL:"#7ea8c9", COOP:"#64b482", ELMOS:"#b478c8", DESC:"#c97070", CIPER:"#c8a96e" };
 
 // ─── CATEGORÍAS INTERNACIONALES (3 macro-categorías diplomáticas) ─
 const CATEGORIES = {
@@ -611,7 +617,7 @@ const NAT_CATEGORIES = {
 let activeSources    = new Set(["BBC","AJE","F24"]);
 let activeCats       = new Set();
 let allNews          = [];
-let natActiveSources = new Set(["COOP"]);
+let natActiveSources = new Set(["COOP","DESC","CIPER"]);
 let natActiveCats    = new Set();
 let natAllNews       = [];
 const summaryCache   = {};
